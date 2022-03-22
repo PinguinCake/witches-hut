@@ -19,5 +19,5 @@
 
 ---
 
-- Авторы: Гуляева Юлия (PinguinCake), Квитка Мария (tortik13)
+- Авторы: Гуляева Юлия (PinguinCake), Квитка Мария (tortik13), Даниелян Сергей (danielyan-s)
 - Отслеживать прогресс: https://docs.google.com/spreadsheets/d/1P-f_EiwEDrhnxPub51_DPax4j1jXkz5hizljlqbEc7w/edit#gid=335361012
