@@ -1,5 +1,4 @@
 from flask import Flask, render_template
-from data import db_session
 
 app = Flask(__name__)
 
@@ -15,8 +14,6 @@ def index():
 
 
 def main():
-    name_db = 'mars_explorer.db'
-    db_session.global_init(f"db/{name_db}")
     app.run(port=5000)
 
 
