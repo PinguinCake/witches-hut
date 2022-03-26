@@ -1,10 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
+
+{% block content %}
 <head>
     <meta charset="UTF-8">
-    <title>КОСМИЧЕСКИЙ ПРОЕКТ</title>
+    <title>{{ title }}</title>
 </head>
 <body>
-    <h1>Салам пополам</h1>
+    <p align="left">
+        <h6 class="display-6">Введение</h6>
+        <a>{{ about }}</a>
+    </p>
+    <p align="left">
+        <h6 class="display-6">Термины</h6>
+        <a>Конечно же, есть ряд необходимых терминов, которые тебе стоит изучить:</a>
+        <ul>
+            {% for term in terms %}
+                <li>{{ term }}</li>
+            {% endfor %}
+        </ul>
+    </p>
 </body>
-</html>
+{% endblock %}

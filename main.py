@@ -19,8 +19,13 @@ def load_user(id):
 
 @app.route("/")
 def index():
+    with open("static/txt/about.txt", "r", encoding="utf-8") as about:
+        data_about = about.read()
+    with open("static/txt/terms.txt", "r", encoding="utf-8") as terms:
+        data_terms = terms.readlines()
+    data_terms = list(map(lambda x: x.rstrip(), data_terms))
     session = db_session.create_session()
-    return render_template("main.html", form=form)
+    return render_template("main.html", title='Главная', about=data_about, terms=data_terms)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -75,8 +80,8 @@ def logout():
 def main():
     name_db = 'webproject.db'
     db_session.global_init(f"db/{name_db}")
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(port=5000)
+
 
 if __name__ == '__main__':
     main()
