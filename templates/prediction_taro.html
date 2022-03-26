@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <p align="centre">
+        <h6 class="display-6">Гадание на игральных картах</h6>
+        <a>Вот твой расклад на сегодня</a>
+        <ul>
+            {% for one in cards %}
+            <li><h6>{{ one }}</h6></li>
+                <h7>{{ one }}</h7>
+            {% endfor %}
+        </ul>
+    </p>
+</body>
+{% endblock %}

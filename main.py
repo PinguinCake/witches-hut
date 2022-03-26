@@ -1,3 +1,5 @@
+import random
+
 from flask import Flask, render_template, redirect
 from data import db_session
 from data.users import User
@@ -76,6 +78,26 @@ def logout():
     logout_user()
     return redirect("/")
 
+
+@app.route('/prediction_taro')
+def prediction_taro():
+    with open("static/txt/taro.txt", "r", encoding="utf-8") as cards:
+        data_cards = cards.readlines()
+        new_cards = random.sample(data_cards, k=3)
+        for num, card in enumerate(new_cards):
+            new_cards[num] = card.replace('\n', '')
+        return render_template("prediction_taro.html", title='Гадание на Таро', cards=new_cards)
+
+
+@app.route('/prediction_card')
+def prediction_card():
+    with open("static/txt/cards.txt", "r", encoding="utf-8") as cards:
+        data_cards = cards.readlines()
+        new_cards = random.sample(data_cards, k=4)
+        for num, card in enumerate(new_cards):
+            delta = card.replace('\n', '').split(' ')
+            new_cards[num] = [' '.join(delta[:2]), delta[2]]
+        return render_template("prediction_card.html", title='Гадание на игральных картах', cards=new_cards)
 
 def main():
     name_db = 'webproject.db'
