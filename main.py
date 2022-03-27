@@ -79,30 +79,36 @@ def logout():
     return redirect("/")
 
 
-@app.route('/prediction_taro')
-def prediction_taro():
-    with open("static/txt/taro.txt", "r", encoding="utf-8") as cards:
-        data_cards = cards.readlines()
-        new_cards = random.sample(data_cards, k=3)
-        for num, card in enumerate(new_cards):
-            new_cards[num] = card.replace('\n', '')
-        return render_template("prediction_taro.html", title='Гадание на Таро', cards=new_cards)
+@app.route('/prediction/<pred_type>')
+def prediction(pred_type):
+    if pred_type == 'choice':
+        pred_type = None
+        return render_template("prediction.html", title="Расклад", type=pred_type)
+    elif pred_type == 'cards':
+        with open('static/json/all_cards.json', encoding='utf-8') as file:
+            data = json.load(file)
+            cards = random.sample(list(data["Карты игральные"]), 2)
+        new_cards = []
+        for i in cards:
+            new_cards.append((i, data["Карты игральные"][i]["описание"], data["Карты игральные"][i]["изображение"]))
+        return render_template("prediction.html", title='Гадание на игральных картах',
+                               type=pred_type, cards=new_cards)
+    elif pred_type == 'tarot':
+        with open("static/txt/taro.txt", "r", encoding="utf-8") as cards:
+            data_cards = cards.readlines()
+            new_cards = random.sample(data_cards, k=3)
+            for num, card in enumerate(new_cards):
+                new_cards[num] = card.replace('\n', '')
+            return render_template("prediction.html", title='Гадание на Таро',
+                                   type=pred_type, cards=new_cards)
+    elif pred_type == 'special':
+        return render_template("prediction.html", title="Специалисты", type=pred_type)
 
-
-@app.route('/prediction_card')
-def prediction_card():
-    with open('static/json/all_cards.json', encoding='utf-8') as file:
-        data = json.load(file)
-        cards = random.sample(list(data["Карты игральные"]), 2)
-    new_cards = []
-    for i in cards:
-        new_cards.append((i, data["Карты игральные"][i]["описание"], data["Карты игральные"][i]["изображение"]))
-    return render_template("prediction_card.html", title='Гадание на игральных картах', cards=new_cards)
 
 def main():
     name_db = 'webproject.db'
     db_session.global_init(f"db/{name_db}")
-    app.run(port=5001)
+    app.run(port=5000)
 
 
 if __name__ == '__main__':

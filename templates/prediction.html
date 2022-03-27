@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <p align="center">
+        {% if not type %}
+            <h6 class="display-6">Выбери тип гадания: </h6>
+            <div class="d-grid gap-2 col-4 justify-content-md-start">
+                <a role="button" class="btn btn-outline-primary" href="/prediction/tarot">Таро</a>
+                <a role="button" class="btn btn-outline-primary" href="/prediction/cards">Игральные карты</a>
+                <a role="button" class="btn btn-outline-success" href="/prediction/special">Со специалистом</a>
+            </div>
+        {% elif type == "cards" %}
+            <h6 class="display-6">Гадание на игральных картах</h6>
+            <a>Вот твой расклад на сегодня: </a>
+            <ul>
+                {% for one in cards %}
+                <li><h6>{{ one[0] }}</h6></li>
+                <h7>{{ one[1] }}</h7>
+                {% endfor %}
+            </ul>
+        {% elif type == "tarot" %}
+            <h6 class="display-6">Гадание на таро</h6>
+            <a>Вот твой расклад на сегодня: </a>
+            <ul>
+                {% for one in cards %}
+                <li><h6>{{ one }}</h6></li>
+                    <h7>{{ one }}</h7>
+                {% endfor %}
+            </ul>
+        {% elif type == "special" %}
+            <h6 class="display-6">Наши специалисты:</h6>
+            <ul>
+                <li>Квитка Мария</li>
+                <li>Гуляева Юлия</li>
+                <li>Даниелян Сергей</li>
+            </ul>
+        {% endif %}
+    </p>
+</body>
+{% endblock %}
