@@ -10,8 +10,13 @@
         {% if not type %}
             <h6 class="display-6">Выбери тип гадания: </h6>
             <div class="d-grid gap-2 col-4 justify-content-md-start">
-                <a role="button" class="btn btn-outline-primary" href="/prediction/tarot">Таро</a>
-                <a role="button" class="btn btn-outline-primary" href="/prediction/cards">Игральные карты</a>
+                {% if current_user.is_authenticated %}
+                    <a role="button" class="btn btn-outline-primary" href="/prediction/tarot">Таро</a>
+                    <a role="button" class="btn btn-outline-primary" href="/prediction/cards">Игральные карты</a>
+                {% else %}
+                    <a role="button" class="btn btn-outline-primary" href="/login">Таро</a>
+                    <a role="button" class="btn btn-outline-primary" href="/login">Игральные карты</a>
+                {% endif %}
                 <a role="button" class="btn btn-outline-success" href="/prediction/special">Со специалистом</a>
             </div>
         {% elif type == "cards" %}
