@@ -1,5 +1,5 @@
+import json
 import random
-
 from flask import Flask, render_template, redirect
 from data import db_session
 from data.users import User
@@ -91,18 +91,18 @@ def prediction_taro():
 
 @app.route('/prediction_card')
 def prediction_card():
-    with open("static/txt/cards.txt", "r", encoding="utf-8") as cards:
-        data_cards = cards.readlines()
-        new_cards = random.sample(data_cards, k=4)
-        for num, card in enumerate(new_cards):
-            delta = card.replace('\n', '').split(' ')
-            new_cards[num] = [' '.join(delta[:2]), delta[2]]
-        return render_template("prediction_card.html", title='Гадание на игральных картах', cards=new_cards)
+    with open('static/json/all_cards.json', encoding='utf-8') as file:
+        data = json.load(file)
+        cards = random.sample(list(data["Карты игральные"]), 2)
+    new_cards = []
+    for i in cards:
+        new_cards.append((i, data["Карты игральные"][i]["описание"], data["Карты игральные"][i]["изображение"]))
+    return render_template("prediction_card.html", title='Гадание на игральных картах', cards=new_cards)
 
 def main():
     name_db = 'webproject.db'
     db_session.global_init(f"db/{name_db}")
-    app.run(port=5000)
+    app.run(port=5001)
 
 
 if __name__ == '__main__':
