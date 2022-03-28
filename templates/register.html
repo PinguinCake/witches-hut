@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "base2.html" %}
 
 {% block content %}
      <h1> Расскажи о себе космосу </h1>
@@ -58,6 +58,8 @@
 
 
         <p>{{ form.submit() }}</p>
+        <a>Уже есть аккаунт?</a>
+        <a href="/login" class="link-primary">Войти</a>
     </form>
 
 {% endblock %}

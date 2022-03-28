@@ -3,14 +3,18 @@ import random
 from flask import Flask, render_template, redirect
 from data import db_session
 from data.users import User
-from data.forms import RegisterForm, LoginForm
+from data.forms import RegisterForm, LoginForm, RecoveryForm, FinalRecoveryForm
 from flask_login import LoginManager, login_user, logout_user, login_required
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 login_manager = LoginManager()
 login_manager.init_app(app)
+msg = MIMEMultipart()
 
 
 @login_manager.user_loader
@@ -38,12 +42,46 @@ def login():
         user = db_sess.query(User).filter(User.email == form.email.data).first()
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
-            print('1')
             return redirect("/")
         return render_template('login.html',
                                message="Неправильный логин или пароль",
                                form=form)
     return render_template('login.html', title='Авторизация', form=form)
+
+
+@app.route('/recovery', methods=['GET', 'POST'])
+def recovery():
+    form = RecoveryForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        user = db_sess.query(User).filter(User.email == form.email.data, User.name == form.name.data).first()
+        if user:
+            to_email = 'danielyan0520@gmail.com'
+            message = 'hi smth interesting'
+            from_email = 'witcheshut@mail.ru'
+            password = 'ejtkcTCZXiBBT7dHkLQM'
+
+            msg.attach(MIMEText(message, 'plain'))
+
+            server = smtplib.SMTP('smtp.mail.ru: 25')  # эту часть лучше не трогать
+            server.starttls()
+            server.login(from_email, password)
+            server.sendmail(from_email, to_email, message)
+            server.quit()
+            return redirect('/frecovery')
+    return render_template('recovery.html', title='Восстановление пароля', form=form)
+
+
+@app.route('/frecovery', methods=['GET', 'POST'])
+def frecovery():
+    form = FinalRecoveryForm()
+    #if form.validate_on_submit():
+    #    db_sess = db_session.create_session()
+    #    user = db_sess.query(User).filter(User.email == form.email.data).first()
+    #    if user:
+    #        form.password.data = User.set_password()
+    #    return redirect('/login')
+    #return render_template('recovery1.html', title='Восстановление пароля', form=form)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -67,7 +105,6 @@ def reqister():
         user.set_password(form.password.data)
         db_sess.add(user)
         db_sess.commit()
-        print(0)
         return redirect('/login')
     return render_template('register.html', title='Регистрация', form=form)
 
