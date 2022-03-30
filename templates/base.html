@@ -10,6 +10,7 @@
           crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}" />
 </head>
+
 <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -30,7 +31,7 @@
                         <a class="nav-link" href="/prediction/choice"> Расклады </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#"> Магазины </a>
+                        <a class="nav-link" href="/shops"> Магазины </a>
                     </li>
                     {% if current_user.is_authenticated %}
                         <li class="nav-item dropdown">
@@ -77,9 +78,12 @@
             {% endif %}
         </nav>
     </header>
+
     <main role="main" class="container">
     {% block content %}{% endblock %}
-    <footer>
+    </main>
+
+    <footer class="footer" id="footer">
         <table class="table table-light table-borderless table-sm">
             <thead class="table-secondary">
                 <tr>
@@ -98,7 +102,7 @@
                 </tr>
                 <tr>
                     <td class="text-start" style="padding-left: 20px">
-                        <a class="btn btn-light btn-sm" href="#"> Магазины </a>
+                        <a class="btn btn-light btn-sm" href="/shops"> Магазины </a>
                     </td>
                     <td class="text-end" style="padding-right: 20px">
                         <a class="btn btn-light btn-sm" href="https://t.me/+4bHCFOYnHf4yZTUy"> Бот тг </a>

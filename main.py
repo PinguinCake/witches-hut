@@ -1,6 +1,7 @@
 import json
 import random
 from flask import Flask, render_template, redirect
+from extra_files.finder import get_png
 from data import db_session
 from data.users import User
 from data.forms import RegisterForm, LoginForm, RecoveryForm, FinalRecoveryForm
@@ -25,6 +26,10 @@ def load_user(id):
 
 @app.route("/")
 def index():
+    files_to_delete = ['school.png']
+    for file in files_to_delete:
+        if os.path.exists(f'static/img/{file}'):
+            os.remove(f'static/img/{file}')
     with open("static/txt/about.txt", "r", encoding="utf-8") as about:
         data_about = about.read()
     with open("static/txt/terms.txt", "r", encoding="utf-8") as terms:
@@ -74,14 +79,15 @@ def recovery():
 
 @app.route('/frecovery', methods=['GET', 'POST'])
 def frecovery():
+    # сообщи, когда полностью доделаешь, я код причешу!
     form = FinalRecoveryForm()
-    #if form.validate_on_submit():
-    #    db_sess = db_session.create_session()
-    #    user = db_sess.query(User).filter(User.email == form.email.data).first()
-    #    if user:
-    #        form.password.data = User.set_password()
-    #    return redirect('/login')
-    #return render_template('recovery1.html', title='Восстановление пароля', form=form)
+    # if form.validate_on_submit():
+    #     db_sess = db_session.create_session()
+    #     user = db_sess.query(User).filter(User.email == form.email.data).first()
+    #     if user:
+    #         form.password.data = User.set_password()
+    #     return redirect('/login')
+    # return render_template('recovery1.html', title='Восстановление пароля', form=form)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -114,6 +120,16 @@ def reqister():
 def logout():
     logout_user()
     return redirect("/")
+
+
+@app.route('/shops')
+def show_shops():
+    coords = [["37.616356%2C55.658374", '17', 'school.png']]
+    images = []
+    for coord in coords:
+        img = get_png(*coord)
+        images.append(img)
+    return render_template("shops.html", title='Магазины', images=images)
 
 
 @app.route('/prediction/<pred_type>')
