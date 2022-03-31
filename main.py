@@ -161,7 +161,7 @@ def prediction(pred_type):
 def main():
     name_db = 'webproject.db'
     db_session.global_init(f"db/{name_db}")
-    app.run(port=5000)
+    app.run(port=5050)
 
 
 if __name__ == '__main__':
