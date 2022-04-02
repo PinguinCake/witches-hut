@@ -1,6 +1,11 @@
 {% extends "base2.html" %}
 
 {% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
      <h1> Расскажи о себе космосу </h1>
       {% if message %}
             <div class="alert alert-warning" role="alert">
@@ -56,10 +61,9 @@
             {% endfor %}
         </p>
 
-
-        <p>{{ form.submit() }}</p>
+        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
         <a>Уже есть аккаунт?</a>
         <a href="/login" class="link-primary">Войти</a>
     </form>
-
+</body>
 {% endblock %}

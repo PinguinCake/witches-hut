@@ -26,7 +26,7 @@ def load_user(id):
 
 @app.route("/")
 def index():
-    files_to_delete = ['school.png']
+    files_to_delete = ['manpupuner.jpg', 'plato_putorana.jpg', 'cave.jpg']
     for file in files_to_delete:
         if os.path.exists(f'static/img/{file}'):
             os.remove(f'static/img/{file}')
@@ -122,14 +122,16 @@ def logout():
     return redirect("/")
 
 
-@app.route('/shops')
+@app.route('/power_places')
 def show_shops():
-    coords = [["37.616356%2C55.658374", '17', 'school.png']]
+    coords = [["94.315662%2C68.340233", '6', 'plato_putorana.jpg', 'Плато Путорана (Красноярский край)'],
+              ["59.298585%2C62.257436", '15', 'manpupuner.jpg', 'Столбы выветривания (Республика Коми)'],
+              ["57.006969%2C57.440527", '16', 'cave.jpg', 'Кунгурская ледяная пещера (Пермский край)']]
     images = []
     for coord in coords:
-        img = get_png(*coord)
-        images.append(img)
-    return render_template("shops.html", title='Магазины', images=images)
+        img = get_png(*coord[:-1])
+        images.append([img, coord[-1]])
+    return render_template("power_places.html", title='Магазины', images=images)
 
 
 @app.route('/prediction/<pred_type>')

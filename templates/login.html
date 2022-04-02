@@ -1,6 +1,11 @@
 {% extends "base2.html" %}
 
 {% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
     <h1>Напомни о себе космосу</h1>
     <form action="" method="post">
         {{ form.hidden_tag() }}
@@ -29,4 +34,5 @@
         <a>Ещё нет аккаунтa?</a>
         <a href="/register" class="link-primary">Зарегистрироваться</a>
     </form>
+</body>
 {% endblock %}
