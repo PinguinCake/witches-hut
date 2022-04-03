@@ -142,20 +142,21 @@ def prediction(pred_type):
     elif pred_type == 'cards':
         with open('static/json/all_cards.json', encoding='utf-8') as file:
             data = json.load(file)
-            cards = random.sample(list(data["Карты игральные"]), 2)
+            cards = random.sample(list(data["Карты игральные"]), 3)
         new_cards = []
         for i in cards:
             new_cards.append((i, data["Карты игральные"][i]["описание"], data["Карты игральные"][i]["изображение"]))
         return render_template("prediction.html", title='Гадание на игральных картах',
                                type=pred_type, cards=new_cards)
     elif pred_type == 'tarot':
-        with open("static/txt/taro.txt", "r", encoding="utf-8") as cards:
-            data_cards = cards.readlines()
-            new_cards = random.sample(data_cards, k=3)
-            for num, card in enumerate(new_cards):
-                new_cards[num] = card.replace('\n', '')
-            return render_template("prediction.html", title='Гадание на Таро',
-                                   type=pred_type, cards=new_cards)
+        with open('static/json/all_cards.json', encoding='utf-8') as file:
+            data = json.load(file)
+            cards = random.sample(list(data["Карты Таро"]), 3)
+        new_cards = []
+        for i in cards:
+            new_cards.append((i, data["Карты Таро"][i]["описание"], data["Карты Таро"][i]["изображение"]))
+        return render_template("prediction.html", title='Гадание на Таро',
+                               type=pred_type, cards=new_cards)
     elif pred_type == 'special':
         return render_template("prediction.html", title="Специалисты", type=pred_type)
 

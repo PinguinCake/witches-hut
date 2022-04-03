@@ -52,7 +52,7 @@
             <a>Вот твой расклад на сегодня: </a>
             <ul>
                 {% for one in cards %}
-                <li><h6>{{ one[0] }}</h6></li>
+                <br><img src="{{url_for('static', filename=one[2])}}"><li><h6>{{ one[0] }}</h6></li>
                 <h7>{{ one[1] }}</h7>
                 {% endfor %}
             </ul>
@@ -61,8 +61,8 @@
             <a>Вот твой расклад на сегодня: </a>
             <ul>
                 {% for one in cards %}
-                <li><h6>{{ one }}</h6></li>
-                    <h7>{{ one }}</h7>
+                <br><img src="{{url_for('static', filename=one[2])}}"><li><h6>{{ one[0] }}</h6></li>
+                <h7>{{ one[1] }}</h7>
                 {% endfor %}
             </ul>
         {% elif type == "special" %}
