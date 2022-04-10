@@ -1,0 +1,177 @@
+{% extends "base.html" %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <p align="center">
+        {% if not type and not day %}
+<!--        ЗЗ-->
+        <h1>ГОРОСКОП</h1>
+<!--        <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/cat">ЗНАК ЗОДИАКА</a>-->
+        <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/aries/today">ОВЕН</a>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/taurus/today">ТЕЛЕЦ</a>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/twins/today">БЛИЗНЕЦЫ</a>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/cancer/today">РАК</a>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/lion/today">ЛЕВ</a>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/virgin/today">ДЕВА</a>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/scales/today">ВЕСЫ</a>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/scorpio/today">СКОРПИОН</a>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/sagittarius/today">СТРЕЛЕЦ</a>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/capricorn/today">КОЗЕРОГ</a>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/aquarius/today">ВОДОЛЕЙ</a>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/fish/today">РЫБЫ</a>
+        </div>
+        <br><span style="font-family: Times New Roman, serif; font-size: 150%;">Ежедневный гороскоп подобранный индивидуально для каждого знака зодиака поможет в принятии важных решений.</span>
+        <br><h3>Календаные периоды знаков:</h3>
+        <li>Овен - с 21 марта по 20 апреля</li>
+        <li>Телец - с 21 апреля по 21 мая</li>
+        <li>Близнецы - с 22 мая по 21 июня</li>
+        <li>Рак - с 22 июня по 22 июля</li>
+        <li>Лев - с 23 июля по 23 августа</li>
+        <li>Дева - с 24 августа по 22 сентября</li>
+        <li>Весы - с 23 сентября по 22 октября</li>
+        <li>Скорпион - с 23 октября по 21 ноября</li>
+        <li>Стрелец - с 22 ноября по 21 декабря</li>
+        <li>Козерог - с 22 декабря по 20 января</li>
+        <li>Водолей - с 21 января по 19 февраля</li>
+        <li>Рыбы - с 20 февраля по 20 марта</li>
+        {% elif type == "aries"%}
+<!--        Овен-->
+        <h1> ГОРОСКОП ДЛЯ ОВНОВ </h1>
+        <dfn> {{ date }} </dfn>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/aries/today">Сегодня</a>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/aries/tomorrow">Завтра</a>
+            {% if not day %}
+                <h5>{{ forecast }}</h5>
+            {% elif day %}
+                <h5>{{ forecast }}</h5>
+            {% endif %}
+        {% elif type == "taurus" %}
+<!--        Телец-->
+        <h1> ГОРОСКОП ДЛЯ ТЕЛЬЦОВ </h1>
+        <dfn> {{ date }} </dfn>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/taurus/today">Сегодня</a>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/taurus/tomorrow">Завтра</a>
+            {% if not day %}
+                <h5>{{ forecast }}</h5>
+            {% elif day %}
+                <h5>{{ forecast }}</h5>
+            {% endif %}
+        {% elif type == "twins" %}
+<!--        Близнецы-->
+        <h1> ГОРОСКОП ДЛЯ БЛИЗНЕЦОВ </h1>
+        <dfn> {{ date }} </dfn>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/twins/today">Сегодня</a>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/twins/tomorrow">Завтра</a>
+            {% if not day %}
+                <h5>{{ forecast }}</h5>
+            {% elif day %}
+                <h5>{{ forecast }}</h5>
+            {% endif %}
+        {% elif type == "cancer" %}
+<!--        Рак-->
+        <h1> ГОРОСКОП ДЛЯ РАКОВ </h1>
+        <dfn> {{ date }} </dfn>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/cancer/today">Сегодня</a>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/cancer/tomorrow">Завтра</a>
+            {% if not day %}
+                <h5>{{ forecast }}</h5>
+            {% elif day %}
+                <h5>{{ forecast }}</h5>
+            {% endif %}
+        {% elif type == "lion" %}
+<!--        Лев-->
+        <h1> ГОРОСКОП ДЛЯ ЛЬВОВ </h1>
+        <dfn> {{ date }} </dfn>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/lion/today">Сегодня</a>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/lion/tomorrow">Завтра</a>
+            {% if not day %}
+                <h5>{{ forecast }}</h5>
+            {% elif day %}
+                <h5>{{ forecast }}</h5>
+            {% endif %}
+        {% elif type == "virgin" %}
+<!--        Дева-->
+        <h1> ГОРОСКОП ДЛЯ ДЕВ </h1>
+        <dfn> {{ date }} </dfn>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/virgin/today">Сегодня</a>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/virgin/tomorrow">Завтра</a>
+            {% if not day %}
+                <h5>{{ forecast }}</h5>
+            {% elif day %}
+                <h5>{{ forecast }}</h5>
+            {% endif %}
+        {% elif type == "scales" %}
+<!--        Весы-->
+        <h1> ГОРОСКОП ДЛЯ ВЕСОВ </h1>
+        <dfn> {{ date }} </dfn>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/scales/today">Сегодня</a>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/scales/tomorrow">Завтра</a>
+            {% if not day %}
+                <h5>{{ forecast }}</h5>
+            {% elif day %}
+                <h5>{{ forecast }}</h5>
+            {% endif %}
+        {% elif type == "scorpio" %}
+<!--        Скорпион-->
+        <h1> ГОРОСКОП ДЛЯ СКОРПИОНОВ </h1>
+        <dfn> {{ date }} </dfn>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/scorpio/today">Сегодня</a>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/scorpio/tomorrow">Завтра</a>
+            {% if not day %}
+                <h5>{{ forecast }}</h5>
+            {% elif day %}
+                <h5>{{ forecast }}</h5>
+            {% endif %}
+        {% elif type == "sagittarius" %}
+<!--        Стрелец-->
+        <h1> ГОРОСКОП ДЛЯ СТРЕЛЬЦОВ </h1>
+        <dfn> {{ date }} </dfn>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/sagittarius/today">Сегодня</a>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/sagittarius/tomorrow">Завтра</a>
+            {% if not day %}
+                <h5>{{ forecast }}</h5>
+            {% elif day %}
+                <h5>{{ forecast }}</h5>
+            {% endif %}
+        {% elif type == "capricorn" %}
+<!--        Козерог-->
+        <h1> ГОРОСКОП ДЛЯ КОЗЕРОГОВ </h1>
+        <dfn> {{ date }} </dfn>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/capricorn/today">Сегодня</a>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/capricorn/tomorrow">Завтра</a>
+            {% if not day %}
+                <h5>{{ forecast }}</h5>
+            {% elif day %}
+                <h5>{{ forecast }}</h5>
+            {% endif %}
+        {% elif type == "aquarius" %}
+<!--        Водолей-->
+        <h1> ГОРОСКОП ДЛЯ ВОДОЛЕЕВ </h1>
+        <dfn> {{ date }} </dfn>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/aquarius/today">Сегодня</a>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/aquarius/tomorrow">Завтра</a>
+            {% if not day %}
+                <h5>{{ forecast }}</h5>
+            {% elif day %}
+                <h5>{{ forecast }}</h5>
+            {% endif %}
+        {% elif type == "fish" %}
+<!--        Рыбы-->
+        <h1> ГОРОСКОП ДЛЯ РЫБ </h1>
+        <dfn> {{ date }} </dfn>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/fish/today">Сегодня</a>
+            <a role="button" class="btn btn-outline-success btn-sm" href="/horoscope/fish/tomorrow">Завтра</a>
+            {% if not day %}
+                <h5>{{ forecast }}</h5>
+            {% elif day %}
+                <h5>{{ forecast }}</h5>
+            {% endif %}
+        {% endif %}
+    </p>
+</body>
+{% endblock %}

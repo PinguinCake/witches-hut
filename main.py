@@ -1,3 +1,4 @@
+import datetime
 import json
 import random
 from flask import Flask, render_template, redirect
@@ -159,6 +160,27 @@ def prediction(pred_type):
                                type=pred_type, cards=new_cards)
     elif pred_type == 'special':
         return render_template("prediction.html", title="Специалисты", type=pred_type)
+
+
+@app.route('/horoscope/<znak_type>')
+@app.route('/horoscope/<znak_type>/<day>')
+def horoscope(znak_type, day='today'):
+    month = {'01': 'Января', '02': 'Февраля', '03': 'Марта', '04': 'Апреля', '05': 'Мая', '06': 'Июня', '07': 'Июля',
+             '08': 'Августа', '09': 'Сентября', '10': 'Октяря', '11': 'Ноября', '12': 'Декабря'}
+    if znak_type == 'choice':
+        znak_type = None
+    today = datetime.date.today()
+    with open('static/json/horoscope.json', encoding='utf-8') as file:
+        data = json.load(file)
+    forecast = data['znak'][day]
+    if day == 'today':
+        day = None
+        date = str(today).split(' ')[0].split('-')
+    else:
+        tomorrow = today + datetime.timedelta(days=1)
+        date = str(tomorrow).split(' ')[0].split('-')
+    date = f'{date[2]} {month[date[1]]} {date[0]}'
+    return render_template("horoscope.html", title='Гороскоп', type=znak_type, day=day, date=date, forecast=forecast)
 
 
 def main():
