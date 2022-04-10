@@ -21,11 +21,13 @@ class LoginForm(FlaskForm):
     remember_me = BooleanField('Закрепиться в памяти')
     submit = SubmitField('Постучаться в космос')
 
+
 class RecoveryForm(FlaskForm):
     """форма восстановления пароля"""
     name = StringField('Твоё имя, ведьма', validators=[DataRequired()])
     email = StringField('Введи почту', validators=[DataRequired()])
     submit = SubmitField('Отправить воспоминание')
+
 
 class FinalRecoveryForm(FlaskForm):
     """форма восстановления пароля"""
