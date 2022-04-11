@@ -62,7 +62,7 @@ def recovery():
         db_sess = db_session.create_session()
         user = db_sess.query(User).filter(User.email == form.email.data, User.name == form.name.data).first()
         if user:
-            to_email = 'danielyan0520@gmail.com'
+            to_email = form.email.data
             message = 'hi smth interesting'
             from_email = 'witcheshut@mail.ru'
             password = 'ejtkcTCZXiBBT7dHkLQM'
@@ -82,13 +82,12 @@ def recovery():
 def frecovery():
     # сообщи, когда полностью доделаешь, я код причешу!
     form = FinalRecoveryForm()
-    # if form.validate_on_submit():
-    #     db_sess = db_session.create_session()
-    #     user = db_sess.query(User).filter(User.email == form.email.data).first()
-    #     if user:
-    #         form.password.data = User.set_password()
-    #     return redirect('/login')
-    # return render_template('recovery1.html', title='Восстановление пароля', form=form)
+     if form.validate_on_submit():
+         db_sess = db_session.create_session()
+         user = db_sess.query(User).filter(User.email == form.email.data).first()
+         if user:
+         return redirect('/login')
+     return render_template('recovery1.html', title='Восстановление пароля', form=form)
 
 
 @app.route('/register', methods=['GET', 'POST'])
