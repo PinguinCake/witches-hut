@@ -27,6 +27,13 @@ def load_user(id):
     return db_sess.query(User).get(id)
 
 
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect("/")
+
+
 @app.route("/")
 def index():
     files_to_delete = ['manpupuner.jpg', 'plato_putorana.jpg', 'cave.jpg']
@@ -62,7 +69,8 @@ def recovery():
     form = RecoveryForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
-        user = db_sess.query(User).filter(User.email == form.email.data, User.name == form.name.data).first()
+        user = db_sess.query(User).filter(User.email == form.email.data, User.name == form.name.data,
+                                          User.surname == form.surname.data).first()
         if user:
             to_email = form.email.data
             message = 'hi smth interesting'
@@ -84,6 +92,10 @@ def recovery():
 def frecovery():
     form = FinalRecoveryForm()
     if form.validate_on_submit():
+        if form.password.data != form.confirm.data:
+            return render_template('register.html', title='Регистрация',
+                                   form=form,
+                                   message="Пароли не совпадают")
         db_sess = db_session.create_session()
         user = db_sess.query(User).filter(User.email == form.email.data).first()
         if user:
@@ -116,13 +128,6 @@ def reqister():
         db_sess.commit()
         return redirect('/login')
     return render_template('register.html', title='Регистрация', form=form)
-
-
-@app.route('/logout')
-@login_required
-def logout():
-    logout_user()
-    return redirect("/")
 
 
 @app.route('/power_places')
@@ -168,20 +173,13 @@ def prediction(pred_type):
 def compatibility(type_of_divination='zodiacs'):
     if type_of_divination == 'zodiacs':
         form = ZodiacsForm()
-        print('form was initialised')
         if form.submit.data:
-            print('something')
             db_sess = db_session.create_session()
-            print('0000')
-            print(form.his_sign.data)
             percent = db_sess.query(ZodiacCompatibility).filter(ZodiacCompatibility.his_sign == form.his_sign.data,
                                                                 ZodiacCompatibility.her_sign == form.her_sign.data).first()
-            print('1111')
             if percent:
-                print('RIGHT SIGNS')
                 return render_template('compatibility.html', title='Совместимость',
                                        type=type_of_divination, percent=percent, form=form)
-            print('FAKE SIGNS')
             return render_template('compatibility.html', title='Совместимость', type=type_of_divination,
                                    message='Нет такого знака зодиака', form=form)
         return render_template('compatibility.html', title='Совместимость', type=type_of_divination, form=form)
