@@ -1,6 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, EmailField, IntegerField
-#from wtforms.fields.html5 import EmailField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, EmailField
 from wtforms.validators import DataRequired
 
 
@@ -34,3 +33,17 @@ class FinalRecoveryForm(FlaskForm):
     email = StringField('Введи почту', validators=[DataRequired()])
     password = PasswordField('Введи новый пароль', validators=[DataRequired()])
     submit = SubmitField('Отправить воспоминание')
+
+
+class ZodiacsForm(FlaskForm):
+    """форма выбора знаков зодиака"""
+    his_sign = StringField('Его знак зодиака', validators=[DataRequired()])
+    her_sign = StringField('Её знак зодиака', validators=[DataRequired()])
+    submit = SubmitField('Узнать совместимость (%)')
+
+
+class NamesForm(FlaskForm):
+    """форма выбора имён"""
+    his_name = StringField('Его имя', validators=[DataRequired()])
+    her_name = StringField('Её имя', validators=[DataRequired()])
+    submit = SubmitField('Узнать совместимость (%)')

@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+    <p align="center">
+        {% if type == "zodiacs" %}
+            <h6 class="display-6">Совместимость по знакам зодиака</h6>
+            <h6> &nbsp; </h6>
+            <form action="" method="post">
+                {{ form.hidden_tag() }}
+                <p>
+                    <select class="form-select" aria-label="Default select example">
+                        <option selected>{{ form.his_sign.label }}</option>
+                        <option value="1">Овен</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </p>
+                <p>
+                    <select class="form-select" aria-label="Default select example">
+                        <option selected>{{ form.her_sign.label }}</option>
+                        <option value="1">Овен</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                    </select>
+                </p>
+                <h6> &nbsp; </h6>
+                <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+                <div>{{ message }}</div>
+            </form>
+        {% elif type == "names" %}
+            <h6 class="display-6">Совместимость по именам</h6>
+        {% endif %}
+    </p>
+</body>
+{% endblock %}

@@ -7,7 +7,7 @@ from data.names import NameCompatibility
 from extra_files.finder import get_png
 from data import db_session
 from data.users import User
-from data.forms import RegisterForm, LoginForm, RecoveryForm, FinalRecoveryForm
+from data.forms import RegisterForm, LoginForm, RecoveryForm, FinalRecoveryForm, ZodiacsForm, NamesForm
 from flask_login import LoginManager, login_user, logout_user, login_required
 import smtplib
 from email.mime.text import MIMEText
@@ -164,10 +164,29 @@ def prediction(pred_type):
         return render_template("prediction.html", title="Специалисты", type=pred_type)
 
 
-@app.route('/compatibility/<type_of_divination>')
+@app.route('/compatibility/<type_of_divination>', methods=['GET', 'POST'])
 def compatibility(type_of_divination='zodiacs'):
     if type_of_divination == 'zodiacs':
-        pass
+        form = ZodiacsForm()
+        print('form was initialised')
+        if form.validate_on_submit():
+            print('something')
+            db_sess = db_session.create_session()
+            print('0000')
+            percent = db_sess.query(ZodiacCompatibility).filter(ZodiacCompatibility.his_sign == form.his_sign.data,
+                                                                ZodiacCompatibility.her_sign == form.her_sign.data).first()
+            print('1111')
+            if percent:
+                print('RIGHT SIGNS')
+                return render_template('compatibility.html', title='Совместимость',
+                                       type=type_of_divination, percent=percent, form=form)
+            print('FAKE SIGNS')
+            return render_template('compatibility.html', title='Совместимость', type=type_of_divination,
+                                   message='Нет такого знака зодиака', form=form)
+        return render_template('compatibility.html', title='Совместимость', type=type_of_divination, form=form)
+    elif type_of_divination == 'names':
+        form = NamesForm()
+        return render_template('compatibility.html', title='Совместимость', type=type_of_divination, form=form)
 
 
 @app.route('/horoscope/<znak_type>')
