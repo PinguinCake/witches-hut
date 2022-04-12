@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, EmailField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, EmailField, SelectField
 from wtforms.validators import DataRequired
 
 
@@ -37,8 +37,8 @@ class FinalRecoveryForm(FlaskForm):
 
 class ZodiacsForm(FlaskForm):
     """форма выбора знаков зодиака"""
-    his_sign = StringField('Его знак зодиака', validators=[DataRequired()])
-    her_sign = StringField('Её знак зодиака', validators=[DataRequired()])
+    his_sign = SelectField('Его знак зодиака', validators=[DataRequired()])
+    her_sign = SelectField('Её знак зодиака', validators=[DataRequired()])
     submit = SubmitField('Узнать совместимость (%)')
 
 

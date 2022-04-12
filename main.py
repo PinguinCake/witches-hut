@@ -82,13 +82,13 @@ def recovery():
 
 @app.route('/frecovery', methods=['GET', 'POST'])
 def frecovery():
-    # сообщи, когда полностью доделаешь, я код причешу!
     form = FinalRecoveryForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
         user = db_sess.query(User).filter(User.email == form.email.data).first()
         if user:
-            print(user.hashed_password)
+            user.set_password(form.password.data)
+            db_sess.commit()
         return redirect('/login')
     return render_template('recovery1.html', title='Восстановление пароля', form=form)
 
@@ -169,10 +169,11 @@ def compatibility(type_of_divination='zodiacs'):
     if type_of_divination == 'zodiacs':
         form = ZodiacsForm()
         print('form was initialised')
-        if form.validate_on_submit():
+        if form.submit.data:
             print('something')
             db_sess = db_session.create_session()
             print('0000')
+            print(form.his_sign.data)
             percent = db_sess.query(ZodiacCompatibility).filter(ZodiacCompatibility.his_sign == form.his_sign.data,
                                                                 ZodiacCompatibility.her_sign == form.her_sign.data).first()
             print('1111')
