@@ -7,7 +7,7 @@
 </head>
 <body>
     <h6> &nbsp; </h6>
-    <h6 class="display-6"> Расскажи о себе космосу </h6>
+    <h6 class="display-6"> Регистрация </h6>
     <h6> &nbsp; </h6>
     {% if message %}
         <div class="alert alert-warning" role="alert">
@@ -73,9 +73,9 @@
             {% endfor %}
         </p>
         <h6> &nbsp; </h6>
-        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
-        <a>Уже есть аккаунт?</a>
-        <a href="/login" class="link-primary">Войти</a>
+        <p>{{ form.submit(type="submit", class="btn btn-outline-primary") }}</p>
+        <a><small>Уже есть аккаунт?</small></a>
+        <a href="/login" class="link-primary"><small>Войти</small></a>
     </form>
 </body>
 {% endblock %}
