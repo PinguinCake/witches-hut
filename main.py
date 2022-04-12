@@ -2,6 +2,8 @@ import datetime
 import json
 import random
 from flask import Flask, render_template, redirect
+from data.zodiacs import ZodiacCompatibility
+from data.names import NameCompatibility
 from extra_files.finder import get_png
 from data import db_session
 from data.users import User
@@ -82,12 +84,13 @@ def recovery():
 def frecovery():
     # сообщи, когда полностью доделаешь, я код причешу!
     form = FinalRecoveryForm()
-     if form.validate_on_submit():
-         db_sess = db_session.create_session()
-         user = db_sess.query(User).filter(User.email == form.email.data).first()
-         if user:
-         return redirect('/login')
-     return render_template('recovery1.html', title='Восстановление пароля', form=form)
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        user = db_sess.query(User).filter(User.email == form.email.data).first()
+        if user:
+            print(user.hashed_password)
+        return redirect('/login')
+    return render_template('recovery1.html', title='Восстановление пароля', form=form)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -159,6 +162,12 @@ def prediction(pred_type):
                                type=pred_type, cards=new_cards)
     elif pred_type == 'special':
         return render_template("prediction.html", title="Специалисты", type=pred_type)
+
+
+@app.route('/compatibility/<type_of_divination>')
+def compatibility(type_of_divination='zodiacs'):
+    if type_of_divination == 'zodiacs':
+        pass
 
 
 @app.route('/horoscope/<znak_type>')

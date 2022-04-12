@@ -6,18 +6,22 @@
     <title>{{ title }}</title>
 </head>
 <body>
-     <h1> Расскажи о себе космосу </h1>
-      {% if message %}
-            <div class="alert alert-warning" role="alert">
-              {{ message }}
-            </div>
-      {% endif %}
+    <h6> &nbsp; </h6>
+    <h6 class="display-6"> Расскажи о себе космосу </h6>
+    <h6> &nbsp; </h6>
+    {% if message %}
+        <div class="alert alert-warning" role="alert">
+            {{ message }}
+        </div>
+    {% endif %}
 
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
         <p>
-            {{ form.login.label }}<br>
-            {{ form.login }}<br>
+            <div class="form-floating mb-3">
+                {{ form.login(class="form-control", type="email", id="floatingInput", placeholder="name@example.com") }}
+                <label for="floatingInput">{{ form.login.label }}</label>
+            </div>
             {% for error in form.login.errors %}
                 <div class="alert alert-danger" role="alert">
                     {{ error }}
@@ -25,8 +29,10 @@
             {% endfor %}
         </p>
         <p>
-            {{ form.password.label }}<br>
-            {{ form.password }}<br>
+            <div class="form-floating">
+                {{ form.password(class="form-control", type="password", id="floatingPassword", placeholder="Password") }}
+                <label for="floatingPassword">{{ form.password.label }}</label>
+            </div>
             {% for error in form.password.errors %}
                 <div class="alert alert-danger" role="alert">
                     {{ error }}
@@ -34,8 +40,10 @@
             {% endfor %}
         </p>
         <p>
-            {{ form.confirm.label }}<br>
-            {{ form.confirm }}<br>
+            <div class="form-floating">
+                {{ form.confirm(class="form-control", type="password", id="floatingPassword", placeholder="Password") }}
+                <label for="floatingPassword">{{ form.confirm.label }}</label>
+            </div>
             {% for error in form.confirm.errors %}
                 <div class="alert alert-danger" role="alert">
                     {{ error }}
@@ -43,8 +51,10 @@
             {% endfor %}
         </p>
         <p>
-            {{ form.surname.label }}<br>
-            {{ form.surname }}<br>
+            <div class="form-floating">
+                {{ form.surname(class="form-control", type="surname", id="floatingInput", placeholder="Surname") }}
+                <label for="floatingInput">{{ form.surname.label }}</label>
+            </div>
             {% for error in form.surname.errors %}
                 <div class="alert alert-danger" role="alert">
                     {{ error }}
@@ -52,15 +62,17 @@
             {% endfor %}
         </p>
         <p>
-            {{ form.name.label }}<br>
-            {{ form.name }}<br>
+            <div class="form-floating">
+                {{ form.name(class="form-control", type="name", id="floatingInput", placeholder="Name") }}
+                <label for="floatingInput">{{ form.name.label }}</label>
+            </div>
             {% for error in form.name.errors %}
                 <div class="alert alert-danger" role="alert">
                     {{ error }}
                 </div>
             {% endfor %}
         </p>
-
+        <h6> &nbsp; </h6>
         <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
         <a>Уже есть аккаунт?</a>
         <a href="/login" class="link-primary">Войти</a>

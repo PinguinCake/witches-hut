@@ -7,6 +7,8 @@ from sqlalchemy import orm
 class ZodiacCompatibility(SqlAlchemyBase, UserMixin):
     __tablename__ = 'zodiacs'
 
+    id = sqlalchemy.Column(sqlalchemy.Integer,
+                           primary_key=True, autoincrement=True)
     percent = sqlalchemy.Column(sqlalchemy.Integer)
     his_sign = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     her_sign = sqlalchemy.Column(sqlalchemy.String, nullable=True)

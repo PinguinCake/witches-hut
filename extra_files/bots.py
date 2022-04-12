@@ -1,7 +1,5 @@
 import logging
 import os
-
-
 from dotenv import load_dotenv
 from telegram import ReplyKeyboardMarkup
 from telegram.ext import Updater, MessageHandler, Filters, CommandHandler
@@ -16,19 +14,20 @@ TOKEN = os.getenv('BOT_TOKEN')
 
 
 def start(update, context):
-    update.message.reply_text("Привет! Я подмастерье. Вот список команд!"
-        "/help - Контакты"
-        "/mcards - Справочник карт"
-        "/stars - Гороскоп & Котики"
-        "/info - Контакты и цены")
-
+    reply_keyboard = [['/help', '/mcards'],
+                      ['/stars', '/info']]
     markup = ReplyKeyboardMarkup(reply_keyboard,
                                  one_time_keyboard=False)
+    update.message.reply_text("Привет! Я подмастерье. Вот список команд: \n"
+        "/help - Контакты \n"
+        "/mcards - Справочник карт \n"
+        "/stars - Гороскоп & Котики \n"
+        "/info - Контакты и цены", reply_markup=markup)
 
 
 def helps(update, context):
-    update.message.reply_text('Данелян Сергей'
-                              'Гуляева Юля'
+    update.message.reply_text('Данелян Сергей \n'
+                              'Гуляева Юля \n'
                               'Квитка Мария')
 
 

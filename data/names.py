@@ -7,6 +7,8 @@ from sqlalchemy import orm
 class NameCompatibility(SqlAlchemyBase, UserMixin):
     __tablename__ = 'names'
 
+    id = sqlalchemy.Column(sqlalchemy.Integer,
+                           primary_key=True, autoincrement=True)
     percent = sqlalchemy.Column(sqlalchemy.Integer)
     his_name = sqlalchemy.Column(sqlalchemy.String, nullable=True)
     her_name = sqlalchemy.Column(sqlalchemy.String, nullable=True)

@@ -35,12 +35,12 @@
                     </li>
                     {% if current_user.is_authenticated %}
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="/compatibility" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Совместимость
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <li><a class="dropdown-item" href="#">По знаку зодиака</a></li>
-                                <li><a class="dropdown-item" href="#">По имени</a></li>
+                                <li><a class="dropdown-item" href="/compatibility/zodiacs">По знаку зодиака</a></li>
+                                <li><a class="dropdown-item" href="/compatibility/names">По имени</a></li>
                             </ul>
                         </li>
                     {% else %}
@@ -97,7 +97,7 @@
                         <a class="btn btn-light btn-sm" href="#"> Гороскоп </a>
                     </td>
                     <td class="text-end" style="padding-right: 20px">
-                        <a class="btn btn-light btn-sm" href="#"> Почта </a>
+                        <a class="btn btn-light btn-sm" href="https://e.mail.ru/compose?To=witcheshut%40mail.ru"> Почта </a>
                     </td>
                 </tr>
                 <tr>
