@@ -7,32 +7,34 @@ class RegisterForm(FlaskForm):
     """форма регистрации"""
     login = StringField('Введи почту', validators=[DataRequired()])
     password = PasswordField('Введи пароль', validators=[DataRequired()])
-    confirm = PasswordField('Повтори-ка', validators=[DataRequired()])
-    surname = StringField('Твоя фамилия, ведьма', validators=[DataRequired()])
-    name = StringField('Твоё имя, ведьма', validators=[DataRequired()])
-    submit = SubmitField('Отправить вселенной')
+    confirm = PasswordField('Повтори пароль', validators=[DataRequired()])
+    surname = StringField('Твоя фамилия', validators=[DataRequired()])
+    name = StringField('Твоё имя', validators=[DataRequired()])
+    submit = SubmitField('Зарегистрироваться')
 
 
 class LoginForm(FlaskForm):
     """форма авторизации"""
-    email = EmailField('Почта', validators=[DataRequired()])
-    password = PasswordField('Пароль', validators=[DataRequired()])
-    remember_me = BooleanField('Закрепиться в памяти')
-    submit = SubmitField('Постучаться в космос')
+    email = EmailField('Введи почту', validators=[DataRequired()])
+    password = PasswordField('Введи пароль', validators=[DataRequired()])
+    remember_me = BooleanField('Запомнить меня')
+    submit = SubmitField('Войти')
 
 
 class RecoveryForm(FlaskForm):
     """форма восстановления пароля"""
-    name = StringField('Твоё имя, ведьма', validators=[DataRequired()])
+    name = StringField('Твоё имя', validators=[DataRequired()])
+    surname = StringField('Твоя фамилия', validators=[DataRequired()])
     email = StringField('Введи почту', validators=[DataRequired()])
-    submit = SubmitField('Отправить воспоминание')
+    submit = SubmitField('Восстановить доступ')
 
 
 class FinalRecoveryForm(FlaskForm):
     """форма восстановления пароля"""
     email = StringField('Введи почту', validators=[DataRequired()])
     password = PasswordField('Введи новый пароль', validators=[DataRequired()])
-    submit = SubmitField('Отправить воспоминание')
+    confirm = PasswordField('Повтори пароль', validators=[DataRequired()])
+    submit = SubmitField('Изменить пароль')
 
 
 class ZodiacsForm(FlaskForm):
