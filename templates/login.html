@@ -7,7 +7,7 @@
 </head>
 <body>
     <h6> &nbsp; </h6>
-    <h6 class="display-6"> Напомни о себе космосу </h6>
+    <h6 class="display-6"> Войдите, чтобы продолжить </h6>
     <h6> &nbsp; </h6>
     <form action="" method="post">
         {{ form.hidden_tag() }}
@@ -37,9 +37,11 @@
         </p>
         <h6> &nbsp; </h6>
         <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
-        <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
-        <a>Ещё нет аккаунтa?</a>
-        <a href="/register" class="link-primary">Зарегистрироваться</a>
+        <p>
+            {{ form.submit(type="submit", class="btn btn-outline-primary") }}
+            <a><small>Ещё нет аккаунтa?</small></a>
+            <a href="/register" class="link-primary"><small>Зарегистрироваться</small></a>
+        </p>
         <div>{{ message }}</div>
     </form>
 </body>
