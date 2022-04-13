@@ -1,0 +1,11 @@
+pred_1
+*
+pict_1
+***
+pred_2
+*
+pict_2
+***
+pred_3
+*
+pict_3

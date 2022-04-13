@@ -257,19 +257,42 @@ def horoscope(znak_type, day='today'):
     """
     month = {'01': 'Января', '02': 'Февраля', '03': 'Марта', '04': 'Апреля', '05': 'Мая', '06': 'Июня', '07': 'Июля',
              '08': 'Августа', '09': 'Сентября', '10': 'Октяря', '11': 'Ноября', '12': 'Декабря'}
+    # Запоминаем запрошенный знак зодиака
+    znak = znak_type
     if znak_type == 'choice':
         znak_type = None
+    # сегодняшняя дата
     today = datetime.date.today()
-    with open('static/json/horoscope.json', encoding='utf-8') as file:
-        data = json.load(file)
-    forecast = data['znak'][day]
+    # Запрошенный день
+    need_day = day
     if day == 'today':
         day = None
         date = str(today).split(' ')[0].split('-')
     else:
         tomorrow = today + datetime.timedelta(days=1)
         date = str(tomorrow).split(' ')[0].split('-')
-    date = f'{date[2]} {month[date[1]]} {date[0]}'
+    # Нужная дата
+    date = f"{date[2]} {month[date[1]]} {date[0]}"
+    # Открываем наш гороскоп
+    with open('static/json/horoscope.json', encoding='utf-8') as file:
+        data = json.load(file)
+    if date not in data:
+        all_znak = {}
+        with open('static/txt/horoscope.txt', encoding='utf-8') as file3:
+            day_predictions_and_pictures = file3.read().replace('\n', '').split('***')
+            day_predictions_and_pictures = [i.split('*') for i in day_predictions_and_pictures]
+        for i in ["aries", "taurus", "twins", "cancer", "lion", "virgin", "scales", "scorpio", "sagittarius", "capricorn", "aquarius", "fish"]:
+            all_znak.update({i: random.choice(day_predictions_and_pictures)})
+        print(date)
+        data.update({date: all_znak})
+        with open('static/json/horoscope.json', 'w', encoding='utf-8') as file2:
+            json.dump(data, file2)
+        with open('static/json/horoscope.json', encoding='utf-8') as file:
+            data = json.load(file)
+    if znak != 'choice':
+        forecast = data[date][znak][0]
+    else:
+        forecast = None
     return render_template("horoscope.html", title='Гороскоп', type=znak_type, day=day, date=date, forecast=forecast)
 
 
