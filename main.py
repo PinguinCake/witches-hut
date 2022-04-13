@@ -36,6 +36,7 @@ def logout():
 
 @app.route("/")
 def index():
+    """ Главная страница: введение и термины """
     files_to_delete = ['manpupuner.jpg', 'plato_putorana.jpg', 'cave.jpg']
     for file in files_to_delete:
         if os.path.exists(f'static/img/{file}'):
@@ -45,12 +46,12 @@ def index():
     with open("static/txt/terms.txt", "r", encoding="utf-8") as terms:
         data_terms = terms.readlines()
     data_terms = list(map(lambda x: x.rstrip(), data_terms))
-    session = db_session.create_session()
     return render_template("main.html", title='Главная', about=data_about, terms=data_terms)
 
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """ Страница авторизации пользователя """
     form = LoginForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
@@ -64,8 +65,40 @@ def login():
     return render_template('login.html', title='Авторизация', form=form)
 
 
+@app.route('/register', methods=['GET', 'POST'])
+def reqister():
+    """ Страница регистрации пользователя """
+    form = RegisterForm()
+    if form.validate_on_submit():
+        if form.password.data != form.confirm.data:
+            return render_template('register.html', title='Регистрация',
+                                   form=form,
+                                   message="Пароли не совпадают")
+        pswd = form.password.data
+        if len(pswd) > 20 or len(pswd) < 8 or pswd.isdigit() or pswd.islower():
+            return render_template('register.html', title='Регистрация',
+                                   form=form, message="Пароль не надёжный")
+        pswd = None  # политика конфиденциальности, нигде не сохраняем не хэшированный пароль пользователя
+        db_sess = db_session.create_session()
+        if db_sess.query(User).filter(User.email == form.login.data).first():
+            return render_template('register.html', title='Регистрация',
+                                   form=form,
+                                   message="Такой пользователь уже есть")
+        user = User(
+            name=form.name.data,
+            surname=form.surname.data,
+            email=form.login.data
+        )
+        user.set_password(form.password.data)
+        db_sess.add(user)
+        db_sess.commit()
+        return redirect('/login')
+    return render_template('register.html', title='Регистрация', form=form)
+
+
 @app.route('/recovery', methods=['GET', 'POST'])
 def recovery():
+    """ Страница первого этапа восстановления пароля """
     form = RecoveryForm()
     if form.validate_on_submit():
         db_sess = db_session.create_session()
@@ -84,18 +117,24 @@ def recovery():
             server.login(from_email, password)
             server.sendmail(from_email, to_email, message)
             server.quit()
-            return redirect('/frecovery')
+            return redirect('/')
     return render_template('recovery.html', title='Восстановление пароля', form=form)
 
 
 @app.route('/frecovery', methods=['GET', 'POST'])
 def frecovery():
+    """ Страница заключительного этапа восстановления пароля """
     form = FinalRecoveryForm()
     if form.validate_on_submit():
         if form.password.data != form.confirm.data:
             return render_template('register.html', title='Регистрация',
                                    form=form,
                                    message="Пароли не совпадают")
+        pswd = form.password.data
+        if len(pswd) > 20 or len(pswd) < 8 or pswd.isdigit() or pswd.islower():
+            return render_template('register.html', title='Регистрация',
+                                   form=form, message="Пароль не надёжный")
+        pswd = None  # политика конфиденциальности, нигде не сохраняем не хэшированный пароль пользователя
         db_sess = db_session.create_session()
         user = db_sess.query(User).filter(User.email == form.email.data).first()
         if user:
@@ -105,33 +144,9 @@ def frecovery():
     return render_template('recovery1.html', title='Восстановление пароля', form=form)
 
 
-@app.route('/register', methods=['GET', 'POST'])
-def reqister():
-    form = RegisterForm()
-    if form.validate_on_submit():
-        if form.password.data != form.confirm.data:
-            return render_template('register.html', title='Регистрация',
-                                   form=form,
-                                   message="Пароли не совпадают")
-        db_sess = db_session.create_session()
-        if db_sess.query(User).filter(User.email == form.login.data).first():
-            return render_template('register.html', title='Регистрация',
-                                   form=form,
-                                   message="Такой пользователь уже есть")
-        user = User(
-            name=form.name.data,
-            surname=form.surname.data,
-            email=form.login.data
-        )
-        user.set_password(form.password.data)
-        db_sess.add(user)
-        db_sess.commit()
-        return redirect('/login')
-    return render_template('register.html', title='Регистрация', form=form)
-
-
 @app.route('/power_places')
-def show_shops():
+def show_places():
+    """ Страница отображения мест силы и их фото со спутника"""
     coords = [["94.315662%2C68.340233", '6', 'plato_putorana.jpg', 'Плато Путорана (Красноярский край)'],
               ["59.298585%2C62.257436", '15', 'manpupuner.jpg', 'Столбы выветривания (Республика Коми)'],
               ["57.006969%2C57.440527", '16', 'cave.jpg', 'Кунгурская ледяная пещера (Пермский край)']]
@@ -144,6 +159,17 @@ def show_shops():
 
 @app.route('/prediction/<pred_type>')
 def prediction(pred_type):
+    """
+    Страница получения предсказаний
+
+    Attributes
+    ----------
+    pred_type : str
+        Тип гадания (choice - выбор гадания,
+                     cards - гадание на игральных картах,
+                     tarot - гадание на картах Таро,
+                     special - наши специалисты и их цены на персональное гадание)
+    """
     if pred_type == 'choice':
         pred_type = None
         return render_template("prediction.html", title="Расклад", type=pred_type)
@@ -171,6 +197,15 @@ def prediction(pred_type):
 
 @app.route('/compatibility/<type_of_divination>', methods=['GET', 'POST'])
 def compatibility(type_of_divination='zodiacs'):
+    """
+    Страница получения информации о совместимости двух людей по заданному критерию
+
+    Attributes
+    ----------
+    type_of_divination : str
+        Критерий, по которому выводится совместимость (zodiacs - по знаку зодиака,
+                                                       names - по именам)
+    """
     if type_of_divination == 'zodiacs':
         form = ZodiacsForm()
         if form.submit.data:
@@ -185,12 +220,41 @@ def compatibility(type_of_divination='zodiacs'):
         return render_template('compatibility.html', title='Совместимость', type=type_of_divination, form=form)
     elif type_of_divination == 'names':
         form = NamesForm()
+        if form.submit.data:
+            db_sess = db_session.create_session()
+            percent = db_sess.query(NameCompatibility).filter(NameCompatibility.his_name == form.his_name.data,
+                                                              NameCompatibility.her_name == form.her_name.data).first()
+            if percent:
+                return render_template('compatibility.html', title='Совместимость',
+                                       type=type_of_divination, percent=percent, form=form)
+            percent = random.randint(38, 96)
+            new_compatibility = NameCompatibility(
+                his_name=form.his_name.data,
+                her_name=form.her_name.data,
+                percent=percent
+            )
+            db_sess.add(new_compatibility)
+            db_sess.commit()
+            percent = db_sess.query(NameCompatibility).filter(NameCompatibility.his_name == form.his_name.data,
+                                                              NameCompatibility.her_name == form.her_name.data).first()
+            return render_template('compatibility.html', title='Совместимость', type=type_of_divination,
+                                   percent=percent, form=form)
         return render_template('compatibility.html', title='Совместимость', type=type_of_divination, form=form)
 
 
 @app.route('/horoscope/<znak_type>')
 @app.route('/horoscope/<znak_type>/<day>')
 def horoscope(znak_type, day='today'):
+    """
+    Страница получения гороскопа на два дня (сегодня и завтра) для каждого знака зодиака, каждый день обновляется
+
+    Attributes
+    ----------
+    znak_type : str
+        Название знака зодиака для получения гороскопа (choice - выбор знака зодиака, прочие - названия знаков)
+    day : str
+        День, на который предоставляется гороскоп (today - сегодня, прочие - другие дни)
+    """
     month = {'01': 'Января', '02': 'Февраля', '03': 'Марта', '04': 'Апреля', '05': 'Мая', '06': 'Июня', '07': 'Июля',
              '08': 'Августа', '09': 'Сентября', '10': 'Октяря', '11': 'Ноября', '12': 'Декабря'}
     if znak_type == 'choice':
@@ -210,6 +274,7 @@ def horoscope(znak_type, day='today'):
 
 
 def main():
+    """ Функция запуска приложения (и подключения к базе данных) """
     name_db = 'webproject.db'
     db_session.global_init(f"db/{name_db}")
     app.run(port=5050)

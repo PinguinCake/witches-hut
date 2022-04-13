@@ -53,6 +53,21 @@
             </form>
         {% elif type == "names" %}
             <h6 class="display-6">Совместимость по именам</h6>
+            <form action="" method="post">
+                {{ form.hidden_tag() }}
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">Его полное имя</span>
+                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="his_name">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="inputGroup-sizing-default">Её полное имя</span>
+                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="her_name">
+                </div>
+                <h6> &nbsp; </h6>
+                <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+                <div>{{ message }}</div>
+                <div>{{ percent }}</div>
+            </form>
         {% endif %}
     </p>
 </body>
