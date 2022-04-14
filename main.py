@@ -59,9 +59,8 @@ def login():
         if user and user.check_password(form.password.data):
             login_user(user, remember=form.remember_me.data)
             return redirect("/")
-        return render_template('login.html',
-                               message="Неправильный логин или пароль",
-                               form=form)
+        return render_template('login.html', message="Неправильный логин или пароль, подбери другое заклинание или "
+                                                     "признай наконец, что забыл его...", form=form)
     return render_template('login.html', title='Авторизация', form=form)
 
 
@@ -71,19 +70,17 @@ def reqister():
     form = RegisterForm()
     if form.validate_on_submit():
         if form.password.data != form.confirm.data:
-            return render_template('register.html', title='Регистрация',
-                                   form=form,
-                                   message="Пароли не совпадают")
+            return render_template('register.html', title='Регистрация', form=form,
+                                   message="Пароли не совпадают, проверь раскладку (язык)")
         pswd = form.password.data
         if len(pswd) > 20 or len(pswd) < 8 or pswd.isdigit() or pswd.islower():
             return render_template('register.html', title='Регистрация',
-                                   form=form, message="Пароль не надёжный")
+                                   form=form, message="Пароль не надёжный, подумай ещё")
         pswd = None  # политика конфиденциальности, нигде не сохраняем не хэшированный пароль пользователя
         db_sess = db_session.create_session()
         if db_sess.query(User).filter(User.email == form.login.data).first():
-            return render_template('register.html', title='Регистрация',
-                                   form=form,
-                                   message="Такой пользователь уже есть")
+            return render_template('register.html', title='Регистрация', form=form,
+                                   message="Такой маг уже есть. Если этот маг - ты, нажми на кнопку 'Войти' ниже!")
         user = User(
             name=form.name.data,
             surname=form.surname.data,
@@ -129,11 +126,11 @@ def frecovery():
         if form.password.data != form.confirm.data:
             return render_template('register.html', title='Регистрация',
                                    form=form,
-                                   message="Пароли не совпадают")
+                                   message="Пароли не совпадают, ты снова его забыл?")
         pswd = form.password.data
         if len(pswd) > 20 or len(pswd) < 8 or pswd.isdigit() or pswd.islower():
             return render_template('register.html', title='Регистрация',
-                                   form=form, message="Пароль не надёжный")
+                                   form=form, message="Пароль не надёжный, подумай ещё")
         pswd = None  # политика конфиденциальности, нигде не сохраняем не хэшированный пароль пользователя
         db_sess = db_session.create_session()
         user = db_sess.query(User).filter(User.email == form.email.data).first()
@@ -240,7 +237,7 @@ def compatibility(type_of_divination='zodiacs'):
                 return render_template('compatibility.html', title='Совместимость', type=type_of_divination,
                                        images=images, percent=percent, form=form)
             return render_template('compatibility.html', title='Совместимость', type=type_of_divination,
-                                   message='Нет такого(-их) знака(-ов) зодиака', form=form)
+                                   message='Нет такого(-их) знака(-ов) зодиака, ведьмак!', form=form)
         return render_template('compatibility.html', title='Совместимость', type=type_of_divination, form=form)
     elif type_of_divination == 'names':
         form = NamesForm()
@@ -252,6 +249,9 @@ def compatibility(type_of_divination='zodiacs'):
                 percent = (f'{form.his_name.data} + {form.her_name.data}', f'{percent}%')
                 return render_template('compatibility.html', title='Совместимость',
                                        type=type_of_divination, percent=percent, form=form)
+            elif not form.his_name.data and not form.her_name.data:
+                return render_template('compatibility.html', title='Совместимость', type=type_of_divination,
+                                       message='Ты не ввёл имени, ведьмак!', form=form)
             percent = random.randint(38, 96)
             new_compatibility = NameCompatibility(
                 his_name=form.his_name.data,
