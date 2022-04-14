@@ -1,3 +1,4 @@
+import datetime
 import json
 import logging
 import os
@@ -47,17 +48,31 @@ def horoscope(update, context):
                           ['Рак', 'Лев', 'Дева'],
                           ['Весы', 'Скорпион', 'Стрелец'],
                           ['Козерог', 'Водолей', 'Рыбы']]
-        markup = ReplyKeyboardMarkup(reply_keyboard)
+        markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=True)
         update.message.reply_text("Напиши свой знак зодиака:", reply_markup=markup)
     else:
+        month = {'01': 'Января', '02': 'Февраля', '03': 'Марта', '04': 'Апреля', '05': 'Мая', '06': 'Июня',
+                 '07': 'Июля', '08': 'Августа', '09': 'Сентября', '10': 'Октяря', '11': 'Ноября', '12': 'Декабря'}
+        english = {"Овен": "aries", "Телец": "taurus", "Близнецы": "twins", "Рак": "cancer", "Лев": "lion",
+                   "Дева": "virgin", "Весы": "scales", "Скорпион": "scorpio", "Стрелец": "sagittarius",
+                   "Козерог": "capricorn", "Водолей": "aquarius", "Рыбы": "fish"}
+
         text = f'Гороскоп на сегодня для знака зодиака {update.message.text}: \n'
-        text += data['znak']['today']
-        response = requests.get('https://aws.random.cat/meow')
-        data = response.json()
-        context.bot.send_photo(
-            update.message.chat_id, photo=data['file'],
-            caption=text
-        )
+        today = datetime.date.today()
+        date = str(today).split(' ')[0].split('-')
+        date = f"{date[2]} {month[date[1]]} {date[0]}"
+
+        if english[update.message.text] in data[date]:
+            text += data[date][english[update.message.text]][0]
+
+            response = requests.get('https://api.thecatapi.com/v1/images/search')
+            data = response.json()
+            reply_keyboard = [['/start', '/help'],
+                              ['/horoscope', '/info']]
+            markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=False)
+            context.bot.send_photo(update.message.chat_id, photo=data[0]['url'], caption=text, reply_markup=markup)
+        else:
+            update.message.reply_text('Такого знака зодиака нет!')
 
 
 def main():
