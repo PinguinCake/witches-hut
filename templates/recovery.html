@@ -13,7 +13,7 @@
         {{ form.hidden_tag() }}
         <p>
             <div class="form-floating">
-                {{ form.name(class="form-control", type="name", id="floatingInput", placeholder="Name") }}
+                {{ form.name(class="form-control shadow mb-3 bg-body rounded", type="name", id="floatingInput", placeholder="Name") }}
                 <label for="floatingInput">{{ form.name.label }}</label>
             </div>
             {% for error in form.name.errors %}
@@ -24,7 +24,7 @@
         </p>
         <p>
             <div class="form-floating">
-                {{ form.surname(class="form-control", type="surname", id="floatingInput", placeholder="Surname") }}
+                {{ form.surname(class="form-control shadow mb-3 bg-body rounded", type="surname", id="floatingInput", placeholder="Surname") }}
                 <label for="floatingInput">{{ form.surname.label }}</label>
             </div>
             {% for error in form.surname.errors %}
@@ -35,7 +35,7 @@
         </p>
         <p>
             <div class="form-floating mb-3">
-                {{ form.email(class="form-control", type="email", id="floatingInput", placeholder="name@example.com") }}
+                {{ form.email(class="form-control shadow mb-3 bg-body rounded", type="email", id="floatingInput", placeholder="name@example.com") }}
                 <label for="floatingInput">{{ form.email.label }}</label>
             </div>
             {% for error in form.email.errors %}
@@ -45,7 +45,7 @@
             {% endfor %}
         </p>
         <h6> &nbsp; </h6>
-        <p>{{ form.submit(type="submit", class="btn btn-outline-success btn-lg") }}</p>
+        <p>{{ form.submit(type="submit", class="btn btn-outline-success btn-lg shadow mb-3 rounded") }}</p>
         <div>{{ message }}</div>
     </form>
 </body>

@@ -14,4 +14,4 @@ class ZodiacCompatibility(SqlAlchemyBase, UserMixin):
     her_sign = sqlalchemy.Column(sqlalchemy.String, nullable=True)
 
     def __repr__(self):
-        return f'<Compatibility> For {self.his_sign} and {self.her_sign} is {self.percent}'
+        return str(self.percent)

@@ -157,6 +157,28 @@ def show_places():
     return render_template("power_places.html", title='Магазины', images=images)
 
 
+@app.route('/study/<cards_type>')
+def study(cards_type):
+    """
+    Страница получения предсказаний
+
+    Attributes
+    ----------
+    cards_type : str
+        Тип справочника (tarot - таро, cards - игральные карты)
+    """
+    if cards_type == 'tarot':
+        with open('static/json/all_cards.json', encoding='utf-8') as file:
+            data = json.load(file)
+            keys = list(data["Карты Таро"])
+        cards = []
+        for key in keys:
+            cards.append((key, data["Карты Таро"][key]['описание'], data["Карты Таро"][key]['изображение']))
+        return render_template("guide.html", title='Справочник по картам Таро', type=cards_type, cards=cards)
+    elif cards_type == 'cards':
+        pass
+
+
 @app.route('/prediction/<pred_type>')
 def prediction(pred_type):
     """
@@ -213,10 +235,12 @@ def compatibility(type_of_divination='zodiacs'):
             percent = db_sess.query(ZodiacCompatibility).filter(ZodiacCompatibility.his_sign == form.his_sign.data,
                                                                 ZodiacCompatibility.her_sign == form.her_sign.data).first()
             if percent:
-                return render_template('compatibility.html', title='Совместимость',
-                                       type=type_of_divination, percent=percent, form=form)
+                images = (f'img/zodiacs/{form.his_sign.data}.jpg', f'img/zodiacs/{form.her_sign.data}.jpg')
+                percent = (f'{form.his_sign.data} + {form.her_sign.data}', f'{percent}%')
+                return render_template('compatibility.html', title='Совместимость', type=type_of_divination,
+                                       images=images, percent=percent, form=form)
             return render_template('compatibility.html', title='Совместимость', type=type_of_divination,
-                                   message='Нет такого знака зодиака', form=form)
+                                   message='Нет такого(-их) знака(-ов) зодиака', form=form)
         return render_template('compatibility.html', title='Совместимость', type=type_of_divination, form=form)
     elif type_of_divination == 'names':
         form = NamesForm()
@@ -225,6 +249,7 @@ def compatibility(type_of_divination='zodiacs'):
             percent = db_sess.query(NameCompatibility).filter(NameCompatibility.his_name == form.his_name.data,
                                                               NameCompatibility.her_name == form.her_name.data).first()
             if percent:
+                percent = (f'{form.his_name.data} + {form.her_name.data}', f'{percent}%')
                 return render_template('compatibility.html', title='Совместимость',
                                        type=type_of_divination, percent=percent, form=form)
             percent = random.randint(38, 96)
@@ -237,6 +262,7 @@ def compatibility(type_of_divination='zodiacs'):
             db_sess.commit()
             percent = db_sess.query(NameCompatibility).filter(NameCompatibility.his_name == form.his_name.data,
                                                               NameCompatibility.her_name == form.her_name.data).first()
+            percent = (f'{form.his_name.data} + {form.her_name.data}', f'{percent}%')
             return render_template('compatibility.html', title='Совместимость', type=type_of_divination,
                                    percent=percent, form=form)
         return render_template('compatibility.html', title='Совместимость', type=type_of_divination, form=form)
@@ -281,7 +307,8 @@ def horoscope(znak_type, day='today'):
         with open('static/txt/horoscope.txt', encoding='utf-8') as file3:
             day_predictions_and_pictures = file3.read().replace('\n', '').split('***')
             day_predictions_and_pictures = [i.split('*') for i in day_predictions_and_pictures]
-        for i in ["aries", "taurus", "twins", "cancer", "lion", "virgin", "scales", "scorpio", "sagittarius", "capricorn", "aquarius", "fish"]:
+        for i in ["aries", "taurus", "twins", "cancer", "lion", "virgin", "scales", "scorpio", "sagittarius",
+                  "capricorn", "aquarius", "fish"]:
             all_znak.update({i: random.choice(day_predictions_and_pictures)})
         print(date)
         data.update({date: all_znak})

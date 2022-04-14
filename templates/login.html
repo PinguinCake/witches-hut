@@ -13,7 +13,7 @@
         {{ form.hidden_tag() }}
         <p>
             <div class="form-floating mb-3">
-                {{ form.email(class="form-control", type="email", id="floatingInput", placeholder="name@example.com") }}
+                {{ form.email(class="form-control shadow mb-3 bg-body rounded", type="email", id="floatingInput", placeholder="name@example.com") }}
                 <label for="floatingInput">{{ form.email.label }}</label>
             </div>
             {% for error in form.email.errors %}
@@ -25,7 +25,7 @@
 
         <p>
             <div class="form-floating">
-                {{ form.password(class="form-control", type="password", id="floatingPassword", placeholder="Password") }}
+                {{ form.password(class="form-control shadow mb-3 bg-body rounded", type="password", id="floatingPassword", placeholder="Password") }}
                 <label for="floatingPassword">{{ form.password.label }}</label>
                 <a href="/recovery" class="link-primary">Забыли пароль?</a>
             </div>
@@ -38,7 +38,7 @@
         <h6> &nbsp; </h6>
         <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
         <p>
-            {{ form.submit(type="submit", class="btn btn-outline-primary") }}
+            {{ form.submit(type="submit", class="btn btn-outline-primary shadow mb-3 rounded") }}
             <a><small>Ещё нет аккаунтa?</small></a>
             <a href="/register" class="link-primary"><small>Зарегистрироваться</small></a>
         </p>

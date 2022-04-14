@@ -10,10 +10,19 @@
         {% if type == "zodiacs" %}
             <h6 class="display-6">Совместимость по знакам зодиака</h6>
             <h6> &nbsp; </h6>
+            {% if not percent %}
+                <img src="{{url_for('static', filename='img/zodiacs/couple.jpg')}}" alt="Здесь должна была быть картинка">
+            {% endif %}
+            <h6> &nbsp; </h6>
             <form action="" method="post">
                 {{ form.hidden_tag() }}
+                {% if message %}
+                    <div class="alert alert-warning" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
                 <p>
-                    <select class="form-select" aria-label="Default select example" name="his_sign">
+                    <select class="form-select shadow mb-3 bg-body rounded text-center" aria-label="Default select example" name="his_sign">
                         <option selected value="None">{{ form.his_sign.label }}</option>
                         <option value="Овен">Овен</option>
                         <option value="Телец">Телец</option>
@@ -30,7 +39,7 @@
                     </select>
                 </p>
                 <p>
-                    <select class="form-select" aria-label="Default select example" name="her_sign">
+                    <select class="form-select shadow mb-3 bg-body rounded text-center" aria-label="Default select example" name="her_sign">
                         <option selected value="None">{{ form.her_sign.label }}</option>
                         <option value="Овен">Овен</option>
                         <option value="Телец">Телец</option>
@@ -47,26 +56,80 @@
                     </select>
                 </p>
                 <h6> &nbsp; </h6>
-                <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
-                <div>{{ message }}</div>
-                <div>{{ percent }}</div>
+                <div class="text-center">
+                    <p>{{ form.submit(type="submit", class="btn btn-primary shadow mb-3 rounded") }}</p>
+                </div>
+                <h6> &nbsp; </h6>
+                {% if percent %}
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <img src="{{url_for('static', filename=images[0])}}" alt="Здесь должна была быть картинка">
+                            </div>
+                            <div class="col text-center">
+                                <div class="row">
+                                    <div class="col">
+                                        <h6 class="display-6">{{ percent[0] }}</h6>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h1 class="display-1">{{ percent[1] }}</h1>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <img src="{{url_for('static', filename=images[1])}}" alt="Здесь должна была быть картинка">
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
             </form>
         {% elif type == "names" %}
             <h6 class="display-6">Совместимость по именам</h6>
+            <h6> &nbsp; </h6>
+            {% if not percent %}
+                <img src="{{url_for('static', filename='img/zodiacs/couple.jpg')}}" alt="Здесь должна была быть картинка">
+            {% endif %}
+            <h6> &nbsp; </h6>
             <form action="" method="post">
                 {{ form.hidden_tag() }}
-                <div class="input-group mb-3">
+                <div class="input-group shadow mb-3 bg-body rounded">
                     <span class="input-group-text" id="inputGroup-sizing-default">Его полное имя</span>
                     <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="his_name">
                 </div>
-                <div class="input-group mb-3">
+                <div class="input-group shadow mb-3 bg-body rounded">
                     <span class="input-group-text" id="inputGroup-sizing-default">Её полное имя</span>
                     <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="her_name">
                 </div>
                 <h6> &nbsp; </h6>
-                <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
-                <div>{{ message }}</div>
-                <div>{{ percent }}</div>
+                <div class="text-center">
+                    <p>{{ form.submit(type="submit", class="btn btn-primary shadow mb-3 rounded") }}</p>
+                </div>
+                {% if percent %}
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <img src="{{url_for('static', filename='img/zodiacs/boy.png')}}" alt="Здесь должна была быть картинка">
+                            </div>
+                            <div class="col text-center">
+                                <div class="row">
+                                    <div class="col">
+                                        <h6 class="display-6">{{ percent[0] }}</h6>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h1 class="display-1">{{ percent[1] }}</h1>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <img src="{{url_for('static', filename='img/zodiacs/girl.png')}}" alt="Здесь должна была быть картинка">
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
             </form>
         {% endif %}
     </p>

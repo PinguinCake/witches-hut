@@ -55,12 +55,12 @@
                         </li>
                     {% endif %}
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="/study/tarot" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Справочник
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <li><a class="dropdown-item" href="#">Описание Таро</a></li>
-                            <li><a class="dropdown-item" href="#">Описание Карт</a></li>
+                            <li><a class="dropdown-item" href="/study/tarot">Описание Таро</a></li>
+                            <li><a class="dropdown-item" href="/study/cards">Описание Карт</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -68,12 +68,12 @@
             {% if current_user.is_authenticated %}
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                     <div class="collapse navbar-collapse">{{ current_user.name }}</div>
-                    <a role="button" class="btn btn-outline-danger" href="/logout">Выйти</a>
+                    <a role="button" class="btn btn-outline-danger shadow-sm rounded" href="/logout">Выйти</a>
                 </div>
             {% else %}
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <a role="button" class="btn btn-outline-success" href="/login">Вернуться</a>
-                    <a role="button" class="btn btn-outline-primary" href="/register">Вступить</a>
+                    <a role="button" class="btn btn-outline-success shadow-sm rounded" href="/login">Вернуться</a>
+                    <a role="button" class="btn btn-outline-primary shadow-sm rounded" href="/register">Вступить</a>
                 </div>
             {% endif %}
         </nav>

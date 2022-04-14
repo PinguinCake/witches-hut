@@ -14,4 +14,4 @@ class NameCompatibility(SqlAlchemyBase, UserMixin):
     her_name = sqlalchemy.Column(sqlalchemy.String, nullable=True)
 
     def __repr__(self):
-        return f'<Compatibility> For {self.his_name} and {self.her_name} is {self.percent}'
+        return str(self.percent)

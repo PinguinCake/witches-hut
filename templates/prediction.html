@@ -10,6 +10,8 @@
         {% if not type %}
             <h6 class="display-6">Выбери тип гадания: </h6>
             <h6> &nbsp; </h6>
+            <img src="{{url_for('static', filename='img/illustrations/prediction.jpg')}}" alt="Здесь должна была быть картинка">
+            <h6> &nbsp; </h6>
                 {% if current_user.is_authenticated %}
                     <li>Техника гадания основана на представлении, что случайно, наугад выбранная карта или несколько
                         карт Таро содержат ответ на вопрос, который гадатель задал, устно или мысленно, перед тем, как
@@ -17,14 +19,13 @@
                         конкретную информацию (номер счёта или телефона, сумму денег, количество предметов и так далее),
                         равно как и ответить на вопрос, предполагающий однозначный ответ «да» или «нет». Также не стоит
                         повторно гадать на одну и ту же тему в пределах относительно небольшого промежутка времени.</li>
-                    <a role="button" class="btn btn-outline-primary" href="/prediction/tarot">Карты Таро Уэйта</a>
-                    <h6> &nbsp; </h6>
+                    <a role="button" class="btn btn-outline-primary shadow mb-3 rounded" href="/prediction/tarot">Карты Таро Уэйта</a>
                     <li>Гадание на обычных игральных картах – один из самых популярных видов гаданий. Все современные
                         игральные карты ведут свое начало от карт Таро. Главное преимущество: Способность гадателя
                         синтезировать полную картину происходящего, причинно-следственные связи, мотивы и последствия
                         поступков различных персонажей, исходя из достаточно разрозненных и обрывочных подсказок,
                         которые дают карты.</li>
-                    <a role="button" class="btn btn-outline-primary" href="/prediction/cards">Игральные карты</a>
+                    <a role="button" class="btn btn-outline-primary shadow mb-3 rounded" href="/prediction/cards">Игральные карты</a>
                 {% else %}
                     <li>Техника гадания основана на представлении, что случайно, наугад выбранная карта или несколько
                         карт Таро содержат ответ на вопрос, который гадатель задал, устно или мысленно, перед тем, как
@@ -32,16 +33,14 @@
                         конкретную информацию (номер счёта или телефона, сумму денег, количество предметов и так далее),
                         равно как и ответить на вопрос, предполагающий однозначный ответ «да» или «нет». Также не стоит
                         повторно гадать на одну и ту же тему в пределах относительно небольшого промежутка времени.</li>
-                    <a role="button" class="btn btn-outline-primary" href="/login">Карты Таро Уэйта</a>
-                    <h6> &nbsp; </h6>
+                    <a role="button" class="btn btn-outline-primary shadow mb-3 rounded" href="/login">Карты Таро Уэйта</a>
                     <li>Гадание на обычных игральных картах – один из самых популярных видов гаданий. Все современные
                         игральные карты ведут свое начало от карт Таро. Главное преимущество: Способность гадателя
                         синтезировать полную картину происходящего, причинно-следственные связи, мотивы и последствия
                         поступков различных персонажей, исходя из достаточно разрозненных и обрывочных подсказок,
                         которые дают карты.</li>
-                    <a role="button" class="btn btn-outline-primary" href="/login">Игральные карты</a>
+                    <a role="button" class="btn btn-outline-primary shadow mb-3 rounded" href="/login">Игральные карты</a>
                 {% endif %}
-                <h6> &nbsp; </h6>
                 <li>Расклад от специалиста - наиболее надёжный способ узнать нужную информацию. Любая ситуация из жизни
                     нуждается в подробном анализе и лишь специалист может разобраться в том, сколько карт стоит выложить
                     в той или иной ситуации, как трактовать ту или иную карту, ведь ситуации могут быть максимально
@@ -50,7 +49,7 @@
                     Выбор за тобой, друг, всю нужную информацию ты можешь узнать, нажав на кнопку ниже, а также у нашего
                     <a href="t.me/witcheshut_bot" class="link-info">бота в телеграм</a> или
                     <a href="https://e.mail.ru/compose?To=witcheshut%40mail.ru" class="link-info">написав нам на почту</a>.</li>
-                <a role="button" class="btn btn-outline-success" href="/prediction/special">Со специалистом</a>
+                <a role="button" class="btn btn-outline-success shadow mb-3 rounded" href="/prediction/special">Со специалистом</a>
         {% elif type == "cards" %}
             <h6 class="display-6">Гадание на игральных картах</h6>
             <a>Вот твой расклад на сегодня: </a>
@@ -70,11 +69,16 @@
                 {% endfor %}
             </ul>
         {% elif type == "special" %}
-            <h6 class="display-6">Наши специалисты:</h6>
+            <figure>
+                <h6 class="display-6">Наши специалисты:</h6>
+                <figcaption class="blockquote-footer">
+                    И по совместительству авторы проекта
+                </figcaption>
+            </figure>
             <h6> &nbsp; </h6>
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 <div class="col">
-                    <div class="card h-100">
+                    <div class="card h-100 shadow mb-3 rounded">
                         <img src="/static/img/specialists/kitten.jpg" class="card-img-top" alt="Здесь должна была быть картинка, но она не нашлась">
                         <div class="card-body">
                             <h5 class="card-title">Гуляева Юлия</h5>
@@ -87,7 +91,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="card h-100">
+                    <div class="card h-100 shadow mb-3 rounded">
                         <img src="/static/img/specialists/kitten.jpg" class="card-img-top" alt="Здесь должна была быть картинка, но она не нашлась">
                         <div class="card-body">
                             <h5 class="card-title">Квитка Мария</h5>
@@ -100,7 +104,7 @@
                     </div>
                 </div>
                 <div class="col">
-                    <div class="card h-100">
+                    <div class="card h-100 shadow mb-3 rounded">
                         <img src="/static/img/specialists/kitten.jpg" class="card-img-top" alt="Здесь должна была быть картинка, но она не нашлась">
                         <div class="card-body">
                             <h5 class="card-title">Даниелян Сергей</h5>
