@@ -49,3 +49,7 @@ class NamesForm(FlaskForm):
     his_name = StringField('Его имя', validators=[DataRequired()])
     her_name = StringField('Её имя', validators=[DataRequired()])
     submit = SubmitField('Узнать совместимость (%)')
+
+class StolenContentForm(FlaskForm):
+    """форма наших источников"""
+    submit = SubmitField('Вернутся на главную страницу')

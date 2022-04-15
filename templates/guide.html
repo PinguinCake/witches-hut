@@ -27,6 +27,22 @@
             </table>
         {% elif type == "cards" %}
             <h6 class="display-6">Справочник по Игральным Картам</h6>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Иллюстрация</th>
+                        <th scope="col">Название и описание</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for card in cards %}
+                        <tr>
+                            <td><img src="{{url_for('static', filename=card[2])}}"></td>
+                            <td><h3>{{ card[0] }}</h3><a>{{ card[1] }}</a></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         {% endif %}
     </p>
 </body>

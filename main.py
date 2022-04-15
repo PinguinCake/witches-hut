@@ -7,7 +7,7 @@ from data.names import NameCompatibility
 from extra_files.finder import get_png
 from data import db_session
 from data.users import User
-from data.forms import RegisterForm, LoginForm, RecoveryForm, FinalRecoveryForm, ZodiacsForm, NamesForm
+from data.forms import RegisterForm, LoginForm, RecoveryForm, FinalRecoveryForm, ZodiacsForm, NamesForm, StolenContentForm
 from flask_login import LoginManager, login_user, logout_user, login_required
 import smtplib
 from email.mime.text import MIMEText
@@ -103,7 +103,9 @@ def recovery():
                                           User.surname == form.surname.data).first()
         if user:
             to_email = form.email.data
-            message = 'hi smth interesting'
+            message = 'http://127.0.0.1:5050/frecovery\n' \
+                      'Привет вот ссылка, чтобы восстановить пароль'
+            msg['Subject'] = 'Восстановление пароля'
             from_email = 'witcheshut@mail.ru'
             password = 'ejtkcTCZXiBBT7dHkLQM'
 
@@ -112,7 +114,7 @@ def recovery():
             server = smtplib.SMTP('smtp.mail.ru: 25')  # эту часть лучше не трогать
             server.starttls()
             server.login(from_email, password)
-            server.sendmail(from_email, to_email, message)
+            server.sendmail(from_email, to_email, msg.as_string())
             server.quit()
             return redirect('/')
     return render_template('recovery.html', title='Восстановление пароля', form=form)
@@ -139,6 +141,15 @@ def frecovery():
             db_sess.commit()
         return redirect('/login')
     return render_template('recovery1.html', title='Восстановление пароля', form=form)
+
+
+@app.route('/stolencontent')
+def stolen():
+    """ Страница с нашими источниками """
+    form = StolenContentForm()
+    if form.validate_on_submit():
+        return redirect('/')
+    return render_template('stolen.html', title='Наши источники', form=form)
 
 
 @app.route('/power_places')
@@ -173,7 +184,13 @@ def study(cards_type):
             cards.append((key, data["Карты Таро"][key]['описание'], data["Карты Таро"][key]['изображение']))
         return render_template("guide.html", title='Справочник по картам Таро', type=cards_type, cards=cards)
     elif cards_type == 'cards':
-        pass
+        with open('static/json/all_cards.json', encoding='utf-8') as file:
+            data = json.load(file)
+            keys = list(data["Карты игральные"])
+        cards = []
+        for key in keys:
+            cards.append((key, data["Карты игральные"][key]['описание'], data["Карты игральные"][key]['изображение']))
+        return render_template("guide.html", title='Справочник по Игральным картам', type=cards_type, cards=cards)
 
 
 @app.route('/prediction/<pred_type>')
@@ -321,6 +338,12 @@ def horoscope(znak_type, day='today'):
     else:
         forecast = None
     return render_template("horoscope.html", title='Гороскоп', type=znak_type, day=day, date=date, forecast=forecast)
+
+
+@app.route('/404')
+def error():
+    """Страница ошибки 404"""
+    return render_template("error.html", title='Error')
 
 
 def main():
