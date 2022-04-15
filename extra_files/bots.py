@@ -57,13 +57,13 @@ def horoscope(update, context):
                    "Дева": "virgin", "Весы": "scales", "Скорпион": "scorpio", "Стрелец": "sagittarius",
                    "Козерог": "capricorn", "Водолей": "aquarius", "Рыбы": "fish"}
 
-        text = f'Гороскоп на сегодня для знака зодиака {update.message.text}: \n'
+        text = f'Гороскоп на сегодня для знака зодиака {update.message.text.capitalize()}: \n'
         today = datetime.date.today()
         date = str(today).split(' ')[0].split('-')
         date = f"{date[2]} {month[date[1]]} {date[0]}"
 
-        if english[update.message.text] in data[date]:
-            text += data[date][english[update.message.text]][0]
+        if update.message.text.capitalize() in english and english[update.message.text.capitalize()] in data[date]:
+            text += data[date][english[update.message.text.capitalize()]][0]
 
             response = requests.get('https://api.thecatapi.com/v1/images/search')
             data = response.json()
@@ -72,7 +72,7 @@ def horoscope(update, context):
             markup = ReplyKeyboardMarkup(reply_keyboard, one_time_keyboard=False)
             context.bot.send_photo(update.message.chat_id, photo=data[0]['url'], caption=text, reply_markup=markup)
         else:
-            update.message.reply_text('Такого знака зодиака нет!')
+            update.message.reply_text('Такого знака зодиака нет...')
 
 
 def main():

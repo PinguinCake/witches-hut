@@ -104,7 +104,7 @@ def recovery():
         if user:
             to_email = form.email.data
             message = 'http://127.0.0.1:5050/frecovery\n' \
-                      'Привет вот ссылка, чтобы восстановить пароль'
+                      'Привет, вот ссылка, чтобы восстановить пароль!'
             msg['Subject'] = 'Восстановление пароля'
             from_email = 'witcheshut@mail.ru'
             password = 'ejtkcTCZXiBBT7dHkLQM'
@@ -143,7 +143,7 @@ def frecovery():
     return render_template('recovery1.html', title='Восстановление пароля', form=form)
 
 
-@app.route('/stolencontent')
+@app.route('/stolen_content')
 def stolen():
     """ Страница с нашими источниками """
     form = StolenContentForm()
@@ -340,10 +340,10 @@ def horoscope(znak_type, day='today'):
     return render_template("horoscope.html", title='Гороскоп', type=znak_type, day=day, date=date, forecast=forecast)
 
 
-@app.route('/404')
+@app.route('/error')
 def error():
-    """Страница ошибки 404"""
-    return render_template("error.html", title='Error')
+    """ Страница ошибки """
+    return render_template("error.html", title='Ошибка')
 
 
 def main():
