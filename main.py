@@ -36,6 +36,7 @@ def logout():
 
 @app.route("/")
 def index():
+    print(1)
     """ Главная страница: введение и термины """
     files_to_delete = ['manpupuner.jpg', 'plato_putorana.jpg', 'cave.jpg']
     for file in files_to_delete:
@@ -340,17 +341,27 @@ def horoscope(znak_type, day='today'):
     return render_template("horoscope.html", title='Гороскоп', type=znak_type, day=day, date=date, forecast=forecast)
 
 
-@app.route('/error')
-def error():
-    """ Страница ошибки """
-    return render_template("error.html", title='Ошибка')
+# @app.route('/error')
+# def error():
+#     """ Страница ошибки """
+#     return render_template("error.html", title='Ошибка')
+
+
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template("error.html", title='Ошибка 404')
+
+
+@app.errorhandler(500)
+def internal_error(error):
+    return render_template("error.html", title='Ошибка 500')
 
 
 def main():
     """ Функция запуска приложения (и подключения к базе данных) """
     name_db = 'webproject.db'
     db_session.global_init(f"db/{name_db}")
-    app.run(port=5050)
+    app.run(port=5005)
 
 
 if __name__ == '__main__':
