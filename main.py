@@ -36,7 +36,6 @@ def logout():
 
 @app.route("/")
 def index():
-    print(1)
     """ Главная страница: введение и термины """
     files_to_delete = ['manpupuner.jpg', 'plato_putorana.jpg', 'cave.jpg']
     for file in files_to_delete:
@@ -328,7 +327,6 @@ def horoscope(znak_type, day='today'):
         for i in ["aries", "taurus", "twins", "cancer", "lion", "virgin", "scales", "scorpio", "sagittarius",
                   "capricorn", "aquarius", "fish"]:
             all_znak.update({i: random.choice(day_predictions_and_pictures)})
-        print(date)
         data.update({date: all_znak})
         with open('static/json/horoscope.json', 'w', encoding='utf-8') as file2:
             json.dump(data, file2)
@@ -339,12 +337,6 @@ def horoscope(znak_type, day='today'):
     else:
         forecast = None
     return render_template("horoscope.html", title='Гороскоп', type=znak_type, day=day, date=date, forecast=forecast)
-
-
-# @app.route('/error')
-# def error():
-#     """ Страница ошибки """
-#     return render_template("error.html", title='Ошибка')
 
 
 @app.errorhandler(404)
