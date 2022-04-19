@@ -353,7 +353,7 @@ def main():
     """ Функция запуска приложения (и подключения к базе данных) """
     name_db = 'webproject.db'
     db_session.global_init(f"db/{name_db}")
-    app.run(port=5005)
+    app.run()
 
 
 if __name__ == '__main__':
