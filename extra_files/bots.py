@@ -2,6 +2,7 @@ import datetime
 import json
 import logging
 import os
+import random
 import requests
 from dotenv import load_dotenv
 from telegram import ReplyKeyboardMarkup
@@ -61,6 +62,20 @@ def horoscope(update, context):
         today = datetime.date.today()
         date = str(today).split(' ')[0].split('-')
         date = f"{date[2]} {month[date[1]]} {date[0]}"
+
+        if date not in data:
+            all_znak = {}
+            with open('static/txt/horoscope.txt', encoding='utf-8') as file3:
+                day_predictions_and_pictures = file3.read().replace('\n', '').split('***')
+                day_predictions_and_pictures = [i.split('*') for i in day_predictions_and_pictures]
+            for i in ["aries", "taurus", "twins", "cancer", "lion", "virgin", "scales", "scorpio", "sagittarius",
+                      "capricorn", "aquarius", "fish"]:
+                all_znak.update({i: random.choice(day_predictions_and_pictures)})
+            data.update({date: all_znak})
+            with open('static/json/horoscope.json', 'w', encoding='utf-8') as file2:
+                json.dump(data, file2)
+            with open('static/json/horoscope.json', encoding='utf-8') as file:
+                data = json.load(file)
 
         if update.message.text.capitalize() in english and english[update.message.text.capitalize()] in data[date]:
             text += data[date][english[update.message.text.capitalize()]][0]
