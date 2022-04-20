@@ -24,7 +24,7 @@ _Кратко предметная область_:
 * На странице Мест силы можно увидеть авторский список энергетически заряженных мест, которые стоит посетить.
 ![alt text](static/img/screenshots/strong_places.jpg)
 * На странице Гороскопа можно узнать гороскоп для любого знака зодиака на текущий день и следующий.
-![alt text](static/img/screenshots/horoscope_main.jpg) ![alt text](static/img/screenshots/horoscope_example.jpg)
+![alt text](static/img/screenshots/horoscope_main.jpg) ![alt text](static/img/screenshots/horoscope_example.JPG)
 * Бот предназначен для получения гороскопа и связи с создателями проекта и/или специалистами-гадателями. Список команд бота предоставляется сразу после его запуска
 ![alt text](static/img/screenshots/bot.png) 
 
