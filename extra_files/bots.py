@@ -65,16 +65,16 @@ def horoscope(update, context):
 
         if date not in data:
             all_znak = {}
-            with open('static/txt/horoscope.txt', encoding='utf-8') as file3:
+            with open('../static/txt/horoscope.txt', encoding='utf-8') as file3:
                 day_predictions_and_pictures = file3.read().replace('\n', '').split('***')
                 day_predictions_and_pictures = [i.split('*') for i in day_predictions_and_pictures]
             for i in ["aries", "taurus", "twins", "cancer", "lion", "virgin", "scales", "scorpio", "sagittarius",
                       "capricorn", "aquarius", "fish"]:
                 all_znak.update({i: random.choice(day_predictions_and_pictures)})
             data.update({date: all_znak})
-            with open('static/json/horoscope.json', 'w', encoding='utf-8') as file2:
+            with open('../static/json/horoscope.json', 'w', encoding='utf-8') as file2:
                 json.dump(data, file2)
-            with open('static/json/horoscope.json', encoding='utf-8') as file:
+            with open('../static/json/horoscope.json', encoding='utf-8') as file:
                 data = json.load(file)
 
         if update.message.text.capitalize() in english and english[update.message.text.capitalize()] in data[date]:
