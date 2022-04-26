@@ -1,14 +1,14 @@
 import datetime
 import json
 import random
-from flask import Flask, render_template, redirect
+from flask import Flask, render_template, redirect, request
 from data.zodiacs import ZodiacCompatibility
 from data.names import NameCompatibility
 from extra_files.finder import get_png
 from data import db_session
 from data.users import User
 from data.forms import RegisterForm, LoginForm, RecoveryForm, FinalRecoveryForm, ZodiacsForm, NamesForm, StolenContentForm
-from flask_login import LoginManager, login_user, logout_user, login_required
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
@@ -19,6 +19,15 @@ app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 login_manager = LoginManager()
 login_manager.init_app(app)
 msg = MIMEMultipart()
+
+
+def get_image():
+    print(current_user.id)
+    if os.path.exists(f'static/img/photo_profile/{current_user.id}.png'):
+        return f'img/photo_profile/{current_user.id}.png'
+    else:
+        print(500)
+        return f'img/photo_profile/00.png'
 
 
 @login_manager.user_loader
@@ -46,7 +55,32 @@ def index():
     with open("static/txt/terms.txt", "r", encoding="utf-8") as terms:
         data_terms = terms.readlines()
     data_terms = list(map(lambda x: x.rstrip(), data_terms))
-    return render_template("main.html", title='Главная', about=data_about, terms=data_terms)
+    return render_template("main.html", title='Главная', about=data_about, terms=data_terms, photo=get_image())
+
+
+@app.route('/profile', methods=['POST', 'GET'])
+def profile():
+    if request.method == 'GET':
+        with open('static/json/profile_images.json', 'r', encoding='utf-8') as list_images:
+            data = json.load(list_images)
+            image = data[current_user.email]
+        return render_template('profile.html', title='Профиль пользователя', photo=get_image())
+    elif request.method == 'POST':
+        f = request.files['file']
+        with open(f'static/img/photo_profile/{current_user.id}.png', "wb") as file:
+            file.write(f.read())
+        with open('static/json/profile_images.json', 'r', encoding='utf-8') as list_images:
+            data = json.load(list_images)
+            data.update({current_user.email: f'img/photo_profile/{current_user.id}.png'})
+            with open('static/json/profile_images.json', 'w', encoding='utf-8') as update_images:
+                json.dump(data, update_images)
+        with open('static/json/profile_images.json', 'r', encoding='utf-8') as list_images:
+            data = json.load(list_images)
+            image = data[current_user.email]
+            if not f:
+                os.remove(f'static/img/photo_profile/{current_user.id}.png')
+                render_template('profile.html', title='Профиль пользователя', photo=get_image())
+        return render_template('profile.html', title='Профиль пользователя', photo=get_image())
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -60,7 +94,7 @@ def login():
             login_user(user, remember=form.remember_me.data)
             return redirect("/")
         return render_template('login.html', message="Неправильный логин или пароль, подбери другое заклинание или "
-                                                     "признай наконец, что забыл его...", form=form)
+                                                     "признай наконец, что забыл его...", form=form, photo=get_image())
     return render_template('login.html', title='Авторизация', form=form)
 
 
@@ -71,11 +105,11 @@ def reqister():
     if form.validate_on_submit():
         if form.password.data != form.confirm.data:
             return render_template('register.html', title='Регистрация', form=form,
-                                   message="Пароли не совпадают, проверь раскладку (язык)")
+                                   message="Пароли не совпадают, проверь раскладку (язык)", photo=get_image())
         pswd = form.password.data
         if len(pswd) > 20 or len(pswd) < 8 or pswd.isdigit() or pswd.islower():
             return render_template('register.html', title='Регистрация',
-                                   form=form, message="Пароль не надёжный, подумай ещё")
+                                   form=form, message="Пароль не надёжный, подумай ещё", photo=get_image())
         pswd = None  # политика конфиденциальности, нигде не сохраняем не хэшированный пароль пользователя
         db_sess = db_session.create_session()
         if db_sess.query(User).filter(User.email == form.login.data).first():
@@ -162,7 +196,7 @@ def show_places():
     for coord in coords:
         img = get_png(*coord[:-1])
         images.append([img, coord[-1]])
-    return render_template("power_places.html", title='Магазины', images=images)
+    return render_template("power_places.html", title='Магазины', images=images, photo=get_image())
 
 
 @app.route('/study/<cards_type>')
@@ -182,7 +216,7 @@ def study(cards_type):
         cards = []
         for key in keys:
             cards.append((key, data["Карты Таро"][key]['описание'], data["Карты Таро"][key]['изображение']))
-        return render_template("guide.html", title='Справочник по картам Таро', type=cards_type, cards=cards)
+        return render_template("guide.html", title='Справочник по картам Таро', type=cards_type, cards=cards, photo=get_image())
     elif cards_type == 'cards':
         with open('static/json/all_cards.json', encoding='utf-8') as file:
             data = json.load(file)
@@ -190,7 +224,7 @@ def study(cards_type):
         cards = []
         for key in keys:
             cards.append((key, data["Карты игральные"][key]['описание'], data["Карты игральные"][key]['изображение']))
-        return render_template("guide.html", title='Справочник по Игральным картам', type=cards_type, cards=cards)
+        return render_template("guide.html", title='Справочник по Игральным картам', type=cards_type, cards=cards, photo=get_image())
 
 
 @app.route('/prediction/<pred_type>')
@@ -208,7 +242,7 @@ def prediction(pred_type):
     """
     if pred_type == 'choice':
         pred_type = None
-        return render_template("prediction.html", title="Расклад", type=pred_type)
+        return render_template("prediction.html", title="Расклад", type=pred_type, photo=get_image())
     elif pred_type == 'cards':
         with open('static/json/all_cards.json', encoding='utf-8') as file:
             data = json.load(file)
@@ -217,7 +251,7 @@ def prediction(pred_type):
         for i in cards:
             new_cards.append((i, data["Карты игральные"][i]["описание"], data["Карты игральные"][i]["изображение"]))
         return render_template("prediction.html", title='Гадание на игральных картах',
-                               type=pred_type, cards=new_cards)
+                               type=pred_type, cards=new_cards, photo=get_image())
     elif pred_type == 'tarot':
         with open('static/json/all_cards.json', encoding='utf-8') as file:
             data = json.load(file)
@@ -226,9 +260,9 @@ def prediction(pred_type):
         for i in cards:
             new_cards.append((i, data["Карты Таро"][i]["описание"], data["Карты Таро"][i]["изображение"]))
         return render_template("prediction.html", title='Гадание на Таро',
-                               type=pred_type, cards=new_cards)
+                               type=pred_type, cards=new_cards, photo=get_image())
     elif pred_type == 'special':
-        return render_template("prediction.html", title="Специалисты", type=pred_type)
+        return render_template("prediction.html", title="Специалисты", type=pred_type, photo=get_image())
 
 
 @app.route('/compatibility/<type_of_divination>', methods=['GET', 'POST'])
@@ -255,7 +289,7 @@ def compatibility(type_of_divination='zodiacs'):
                                        images=images, percent=percent, form=form)
             return render_template('compatibility.html', title='Совместимость', type=type_of_divination,
                                    message='Нет такого(-их) знака(-ов) зодиака, ведьмак!', form=form)
-        return render_template('compatibility.html', title='Совместимость', type=type_of_divination, form=form)
+        return render_template('compatibility.html', title='Совместимость', type=type_of_divination, form=form, photo=get_image())
     elif type_of_divination == 'names':
         form = NamesForm()
         if form.submit.data:
@@ -282,7 +316,7 @@ def compatibility(type_of_divination='zodiacs'):
             percent = (f'{form.his_name.data} + {form.her_name.data}', f'{percent}%')
             return render_template('compatibility.html', title='Совместимость', type=type_of_divination,
                                    percent=percent, form=form)
-        return render_template('compatibility.html', title='Совместимость', type=type_of_divination, form=form)
+        return render_template('compatibility.html', title='Совместимость', type=type_of_divination, form=form, photo=get_image())
 
 
 @app.route('/horoscope/<znak_type>')
@@ -336,7 +370,7 @@ def horoscope(znak_type, day='today'):
         forecast = data[date][znak][0]
     else:
         forecast = None
-    return render_template("horoscope.html", title='Гороскоп', type=znak_type, day=day, date=date, forecast=forecast)
+    return render_template("horoscope.html", title='Гороскоп', type=znak_type, day=day, date=date, forecast=forecast, photo=get_image())
 
 
 @app.errorhandler(404)

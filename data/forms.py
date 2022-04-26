@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, EmailField, SelectField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, EmailField, SelectField, FileField
 from wtforms.validators import DataRequired
 
 
@@ -50,6 +50,12 @@ class NamesForm(FlaskForm):
     her_name = StringField('Её имя', validators=[DataRequired()])
     submit = SubmitField('Узнать совместимость (%)')
 
+
 class StolenContentForm(FlaskForm):
     """форма наших источников"""
     submit = SubmitField('Вернутся на главную страницу')
+
+
+class ImageForm(FlaskForm):
+    file = FileField('Фото', validators=[DataRequired()])
+    submit = SubmitField('Загрузить фото')

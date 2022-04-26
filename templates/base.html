@@ -70,8 +70,10 @@
             </div>
             {% if current_user.is_authenticated %}
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <img src="{{url_for('static', filename=photo)}}" width="30" height="30">
                     <div class="collapse navbar-collapse">{{ current_user.name }}</div>
                     <a role="button" class="btn btn-outline-danger shadow-sm rounded" href="/logout">Выйти</a>
+                    <a role="button" class="btn btn-outline-danger shadow-sm rounded" href="/profile">Профиль</a>
                 </div>
             {% else %}
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
