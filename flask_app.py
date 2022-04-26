@@ -137,7 +137,7 @@ def recovery():
                                           User.surname == form.surname.data).first()
         if user:
             to_email = form.email.data
-            message = 'http://127.0.0.1:5050/frecovery\n' \
+            message = 'https://pinguin.pythonanywhere.com/frecovery\n' \
                       'Привет, вот ссылка, чтобы восстановить пароль!'
             msg['Subject'] = 'Восстановление пароля'
             from_email = 'witcheshut@mail.ru'
