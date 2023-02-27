@@ -22,11 +22,9 @@ msg = MIMEMultipart()
 
 
 def get_image():
-    print(current_user.id)
-    if os.path.exists(f'static/img/photo_profile/{current_user.id}.png'):
+    if current_user.is_authenticated and os.path.exists(f'static/img/photo_profile/{current_user.id}.png'):
         return f'img/photo_profile/{current_user.id}.png'
     else:
-        print(500)
         return f'img/photo_profile/00.png'
 
 
@@ -63,7 +61,7 @@ def profile():
     if request.method == 'GET':
         with open('static/json/profile_images.json', 'r', encoding='utf-8') as list_images:
             data = json.load(list_images)
-            image = data[current_user.email]
+#             image = data[current_user.email]
         return render_template('profile.html', title='Профиль пользователя', photo=get_image())
     elif request.method == 'POST':
         f = request.files['file']
@@ -76,7 +74,7 @@ def profile():
                 json.dump(data, update_images)
         with open('static/json/profile_images.json', 'r', encoding='utf-8') as list_images:
             data = json.load(list_images)
-            image = data[current_user.email]
+#             image = data[current_user.email]
             if not f:
                 os.remove(f'static/img/photo_profile/{current_user.id}.png')
                 render_template('profile.html', title='Профиль пользователя', photo=get_image())
